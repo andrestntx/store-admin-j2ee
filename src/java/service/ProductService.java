@@ -23,6 +23,6 @@ public class ProductService {
         entity.setName(vo.getName());
         entity.setPrice(vo.getPrice());
         
-        ProductDAO.persist(entity, entityManager);
+        ProductDAO productDAO = new ProductDAO(entityManager);
     }
 }

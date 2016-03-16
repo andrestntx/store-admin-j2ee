@@ -5,16 +5,15 @@
  */
 package dao;
 
-import entity.Product;
 import javax.persistence.EntityManager;
 
 /**
  *
  * @author andrestntx
  */
-public class ProductDAO extends BaseDAO<Product>{     
-
-   public ProductDAO(EntityManager em) {
-        super(em);
+public class DAOFactory {
+    
+    public static UserDAO getUserDAO(EntityManager em){
+        return new UserDAO(em);
     }
 }

@@ -20,6 +20,6 @@ public class CategoryService {
         entity.setId(vo.getId());
         entity.setName(vo.getName());
         
-        CategoryDAO.persist(entity, entityManager);
+        CategoryDAO categoryDAO = new CategoryDAO(entityManager);
     }
 }
