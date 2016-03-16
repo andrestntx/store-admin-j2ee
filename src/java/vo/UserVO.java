@@ -5,6 +5,8 @@
  */
 package vo;
 
+import entity.User;
+
 /**
  *
  * @author andrestntx
@@ -15,6 +17,15 @@ public class UserVO {
     private String username;
     private String email;
     private String password;
+    
+    public User toEntity(){
+        User entity = new User();
+        entity.setName(this.getName());
+        entity.setUsername(this.getUsername());
+        entity.setEmail(this.getEmail());
+        entity.setPassword(this.getPassword());        
+        return entity;
+    }
 
     public String getPassword() {
         return password;

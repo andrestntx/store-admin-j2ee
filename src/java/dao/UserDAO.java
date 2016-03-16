@@ -6,15 +6,28 @@
 package dao;
 
 import entity.User;
+import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 /**
  *
  * @author andrestntx
  */
-public class UserDAO {
-    
-    public static void persist(User entity, EntityManager entityManager){
-        entityManager.persist(entity);
+public class UserDAO extends BaseDAO<User>{     
+
+   public UserDAO(EntityManager em) {
+        super(em);
+    }
+   
+   public User getUserLogin(String login, String password){
+            Query jpql = this.em.createQuery("select s from User s where s.login = :login AND s.password = :password");
+            jpql.setParameter("login", login);
+            jpql.setParameter("password", password);
+            List<User> users = (List<User>)jpql.getResultList();
+            if(users.size() > 0){
+                return users.get(0);
+            }
+            return null;        
     }
 }
