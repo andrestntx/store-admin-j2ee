@@ -11,15 +11,27 @@ import entity.User;
  *
  * @author andrestntx
  */
-public class UserVO {
-    private int id;
+public class UserVO extends BaseVO {
+    private Long id;
     private String name;
     private String username;
     private String email;
     private String password;
     
+    public UserVO(String name, String username, String email, String password) {
+        this.name = name;
+        this.username = username;
+        this.email = email;        
+        this.password = password;
+        
+    }
+
+    public UserVO() {
+       
+    }
+    
     public User toEntity(){
-        User entity = new User();
+        User entity = new User();        
         entity.setName(this.getName());
         entity.setUsername(this.getUsername());
         entity.setEmail(this.getEmail());
@@ -34,12 +46,12 @@ public class UserVO {
     public void setPassword(String password) {
         this.password = password;
     }
-    
-    public int getId() {
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -66,7 +78,4 @@ public class UserVO {
     public void setEmail(String email) {
         this.email = email;
     }
-    
-    
-    
 }

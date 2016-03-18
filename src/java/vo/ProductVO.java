@@ -5,16 +5,39 @@
  */
 package vo;
 
+import entity.Product;
+
 /**
  *
  * @author andrestntx
  */
-public class ProductVO {
+public class ProductVO extends BaseVO {
     private int id;
     private int created_by;
     private double price;
     private String name;
     private String description;
+
+    public ProductVO(int created_by, double price, String name, String description) {
+        this.created_by = created_by;
+        this.price = price;
+        this.name = name;
+        this.description = description;
+    }
+    
+    public ProductVO(){
+    
+    }
+    
+    public Product toEntity(){
+        Product entity = new Product();        
+        entity.setName(this.getName());
+        entity.setCreated_by(this.getCreated_by());
+        entity.setDescription(this.getDescription());
+        entity.setPrice(this.getPrice());
+                
+        return entity;
+    }
 
     public int getId() {
         return id;

@@ -15,7 +15,7 @@ import vo.ProductVO;
  * @author andrestntx
  */
 @Entity
-public class Product implements Serializable{
+public class Product extends BaseEntity implements Serializable{
     @Id
     private int id;
     private int created_by;

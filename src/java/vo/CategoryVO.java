@@ -5,14 +5,30 @@
  */
 package vo;
 
+import entity.Category;
+
 /**
  *
  * @author andrestntx
  */
-public class CategoryVO {
+public class CategoryVO extends BaseVO {
     private int id;
     private String name;
 
+    public CategoryVO(String name) {
+        this.name = name;
+    }
+
+    public CategoryVO() {
+    }
+    
+    public Category toEntity(){
+        Category entity = new Category();        
+        entity.setName(this.getName());
+                
+        return entity;
+    }
+    
     public int getId() {
         return id;
     }

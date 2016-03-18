@@ -12,9 +12,9 @@ import vo.ProductVO;
 
 /**
  *
- * @author andrestntx
+ * @author Felipe Iz
  */
-public class ProductService {
+public class ProductService extends BaseService{
     
     public void persist(ProductVO vo, EntityManager entityManager) {
         Product entity = new Product();

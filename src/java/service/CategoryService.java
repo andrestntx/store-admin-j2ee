@@ -18,9 +18,18 @@ import vo.CategoryVO;
 
 /**
  *
- * @author andrestntx
+ * @author Felipe Iz
  */
 public class CategoryService {
+    
+    protected List<CategoryVO> toVO(List<Category> entities) {
+        List<CategoryVO> vos = new ArrayList<>();
+        for (Category entity : entities) {
+            vos.add(entity.toVO());
+        }
+        return vos;
+    }
+    
     public void persist(CategoryVO vo, EntityManager entityManager) {
         Category entity = new Category();
         entity.setId(vo.getId());
@@ -36,11 +45,10 @@ public class CategoryService {
         
         CategoryDAO categoryDAO = DAOFactory.getCategoryDAO(em);
         List<Category> categories = null;
-        List<CategoryDAO> categoriesVO = new ArrayList<CategoryDAO>();
         
         try {
             trans.begin();
-            categories = categoryDAO.all();
+            categories = categoryDAO.getAll();
             trans.commit();
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -48,11 +56,7 @@ public class CategoryService {
             em.clear();
             em.close();
         }
-        
-        for (Category category : categories) {
-            categoriesVO.add(category.toVO());
-        }
-        
-        return categoriesVO;
+                        
+        return this.toVO(categories);
     }
 }

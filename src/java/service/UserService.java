@@ -8,8 +8,10 @@ package service;
 import dao.DAOFactory;
 import dao.UserDAO;
 import entity.User;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -18,13 +20,13 @@ import vo.UserVO;
 
 /**
  *
- * @author andrestntx
+ * @author Felipe Iz
  */
-public class UserService {
+public class UserService extends BaseService{
     
 
         public UserVO getByLogin(String login, String password) {
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory("JPALab1-ModelPU");
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("storeAdminsPU");
             EntityManager em = emf.createEntityManager();
             EntityTransaction trans = em.getTransaction();
             UserDAO userDAO = DAOFactory.getUserDAO(em);
@@ -44,21 +46,17 @@ public class UserService {
             }
             return user.toVO();
         }
-            
         
-    
-       
-    
-        public UserVO newUser(UserVO user){ 
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("JPALab1-ModelPU");
+        public UserVO newUser(UserVO userVO){ 
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("storeAdminsPU");
         EntityManager em = emf.createEntityManager();
         EntityTransaction trans = em.getTransaction();
         UserDAO studentDAO = DAOFactory.getUserDAO(em);        
-        User student1 = null;
-        student1 = user.toEntity();
+        User user = null;
+        user = userVO.toEntity();
         try {
             trans.begin();
-            studentDAO.save(student1);
+            studentDAO.save(user);
             trans.commit();
         } catch (Exception e) {
             trans.rollback();            
@@ -68,11 +66,11 @@ public class UserService {
             em.close();
         }  
         
-        return student1.toVO();
+        return user.toVO();
     }
     
     public boolean newUsers(Collection<UserVO> users){ 
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("JPALab1-ModelPU");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("storeAdminsPU");
         EntityManager em = emf.createEntityManager();
         EntityTransaction trans = em.getTransaction();
         UserDAO userDAO = DAOFactory.getUserDAO(em);
@@ -98,7 +96,7 @@ public class UserService {
     }
     
     public UserVO findUser(Long id){
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("JPALab1-ModelPU");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("storeAdminsPU");
         EntityManager em = emf.createEntityManager();
         EntityTransaction trans = em.getTransaction();
         UserDAO userDAO = DAOFactory.getUserDAO(em);
@@ -119,7 +117,7 @@ public class UserService {
     }
     
     public boolean updateUser(UserVO user){
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("JPALab1-ModelPU");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("storeAdminsPU");
         EntityManager em = emf.createEntityManager();
         EntityTransaction trans = em.getTransaction();
         UserDAO userDAO = DAOFactory.getUserDAO(em);
@@ -142,7 +140,7 @@ public class UserService {
     }
     
     public boolean deleteUser(Long id){
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("JPALab1-ModelPU");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("storeAdminsPU");
         EntityManager em = emf.createEntityManager();
         EntityTransaction trans = em.getTransaction();
         UserDAO userDAO = DAOFactory.getUserDAO(em);
@@ -160,6 +158,32 @@ public class UserService {
         }  
         
         return flag;
+    }
+    
+    public List<UserVO> allUsers() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("storeAdminsPU");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction trans = em.getTransaction();
+        UserDAO userDAO = DAOFactory.getUserDAO(em);
+        List<User> users = null;
+        List<UserVO> usersVO = new ArrayList<UserVO>();
+        
+        try {
+            trans.begin();
+            users = userDAO.getAll();
+            trans.commit();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        } finally {
+            em.clear();
+            em.close();
+        }
+        
+        for (User user : users) {
+            usersVO.add(user.toVO());
+        }
+        
+        return usersVO;
     }
     
 }

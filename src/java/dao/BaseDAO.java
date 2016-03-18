@@ -47,10 +47,14 @@ public class BaseDAO <T> {
     
     public void delete(T entity){
         this.em.remove(this.em.merge(entity));
-    } 
+    }
     
-    public List<T> all(){
-        Query jpql = this.em.createQuery("select s from :Entity");
+    public List<T> getAll() {
+        return this.getAll(50);
+    }
+    
+    public List<T> getAll(int maxResults) {
+        Query jpql = this.em.createQuery("select u from :Entity u").setMaxResults(maxResults);  
         jpql.setParameter("Entity", this.type.getSimpleName());
         return (List<T>)jpql.getResultList();
     }
@@ -63,6 +67,4 @@ public class BaseDAO <T> {
         
         return (List<T>)jpql.getResultList();
     }
-    
-
 }

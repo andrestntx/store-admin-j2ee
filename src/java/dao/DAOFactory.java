@@ -9,11 +9,15 @@ import javax.persistence.EntityManager;
 
 /**
  *
- * @author andrestntx
+ * @author Felipe Iz
  */
 public class DAOFactory {
     
     public static UserDAO getUserDAO(EntityManager em){
         return new UserDAO(em);
+    }
+
+    public static CategoryDAO getCategoryDAO(EntityManager em) {
+        return new CategoryDAO(em);
     }
 }

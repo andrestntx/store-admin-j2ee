@@ -15,7 +15,7 @@ import vo.CategoryVO;
  * @author andrestntx
  */
 @Entity
-public class Category implements Serializable{
+public class Category extends BaseEntity implements Serializable{
     @Id
     private int id;
     private String name;

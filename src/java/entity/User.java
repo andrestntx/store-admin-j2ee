@@ -7,6 +7,8 @@ package entity;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import vo.UserVO;
 
@@ -15,13 +17,19 @@ import vo.UserVO;
  * @author andrestntx
  */
 @Entity
-public class User implements Serializable {
+public class User extends BaseEntity implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;    
     private String name;
     private String username;
     private String email;
     private String password;
+    
+    public User(){
+        
+    }
     
     public UserVO toVO(){
         UserVO vo = new UserVO();
@@ -40,12 +48,12 @@ public class User implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-    
-    public int getId() {
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
