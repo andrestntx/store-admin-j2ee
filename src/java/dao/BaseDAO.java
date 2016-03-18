@@ -5,7 +5,9 @@
  */
 package dao;
 
+import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 /**
  *
@@ -18,7 +20,6 @@ public class BaseDAO <T> {
     protected Class<T> type;
 
     public BaseDAO(EntityManager em) {
-        
         this.em = em;
     }
     
@@ -47,5 +48,21 @@ public class BaseDAO <T> {
     public void delete(T entity){
         this.em.remove(this.em.merge(entity));
     } 
+    
+    public List<T> all(){
+        Query jpql = this.em.createQuery("select s from :Entity");
+        jpql.setParameter("Entity", this.type.getSimpleName());
+        return (List<T>)jpql.getResultList();
+    }
+    
+    public List<T> getByAttribute(String attribute, String value){
+        Query jpql = this.em.createQuery("select s from :Entity s where s.:attribute.id = :value");
+        jpql.setParameter("Entity", this.type.getSimpleName());
+        jpql.setParameter("attribute", attribute);
+        jpql.setParameter("value", value);
+        
+        return (List<T>)jpql.getResultList();
+    }
+    
 
 }
