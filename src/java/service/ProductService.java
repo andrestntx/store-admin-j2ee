@@ -12,7 +12,7 @@ import vo.ProductVO;
 
 /**
  *
- * @author andrestntx
+ * @author Felipe Iz
  */
 public class ProductService {
     

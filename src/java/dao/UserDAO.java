@@ -30,4 +30,9 @@ public class UserDAO extends BaseDAO<User>{
             }
             return null;        
     }
+   
+   public List<User> getAll() {
+        Query jpql = this.em.createQuery("select u from User u").setMaxResults(50);        
+        return (List<User>)jpql.getResultList();
+    }
 }

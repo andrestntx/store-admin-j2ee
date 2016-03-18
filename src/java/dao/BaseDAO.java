@@ -5,7 +5,9 @@
  */
 package dao;
 
+import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 /**
  *
@@ -46,6 +48,7 @@ public class BaseDAO <T> {
     
     public void delete(T entity){
         this.em.remove(this.em.merge(entity));
-    } 
+    }   
+    
 
 }

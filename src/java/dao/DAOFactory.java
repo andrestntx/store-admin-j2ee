@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
 
 /**
  *
- * @author andrestntx
+ * @author Felipe Iz
  */
 public class DAOFactory {
     

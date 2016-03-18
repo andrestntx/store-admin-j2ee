@@ -12,7 +12,7 @@ import vo.CategoryVO;
 
 /**
  *
- * @author andrestntx
+ * @author Felipe Iz
  */
 public class CategoryService {
     public void persist(CategoryVO vo, EntityManager entityManager) {
