@@ -7,55 +7,20 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import service.CategoryService;
 import service.ProductService;
-import vo.CategoryVO;
 import vo.ProductVO;
 
 /**
  *
  * @author andrestntx
  */
-@WebServlet(name = "CategoriesController", urlPatterns = {"/categories"})
-public class CategoriesController extends HttpServlet {
+public class ProductsController extends HttpServlet {
 
-    protected void doGetCategories(HttpServletRequest request, HttpServletResponse response) 
-        throws ServletException, IOException {
-        
-        CategoryService service = new CategoryService();
-        List<CategoryVO> categories = service.getAllCategories();
-        
-        request.setAttribute("categoires", categories);
-        RequestDispatcher rd = request.getRequestDispatcher("public/categories.jsp");
-        rd.forward(request, response);
-    }
-    
-    protected void doGetCategoryProducts(HttpServletRequest request, HttpServletResponse response, String categoryId)
-        throws ServletException, IOException {
-        
-        List<ProductVO> products = new ArrayList<>();
-        CategoryService categoryService = new CategoryService();
-        CategoryVO category = categoryService.getCategory(categoryId);
-        
-        if(category != null) {
-            ProductService productService = new ProductService();
-            products = productService.getProductsByCategory(categoryId);
-        }
-        
-        request.setAttribute("category", category);
-        request.setAttribute("products", products);
-        RequestDispatcher rd = request.getRequestDispatcher("public/products.jsp");
-        rd.forward(request, response);
-    }
-    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -73,10 +38,10 @@ public class CategoriesController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CategoriesController</title>");            
+            out.println("<title>Servlet CategoryProductsController</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CategoriesController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CategoryProductsController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -95,17 +60,13 @@ public class CategoriesController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String categoryId = request.getParameter("category");
+        Long productId = new Long(request.getParameter("product"));
+        ProductService service = new ProductService();
+        ProductVO product = service.getProduct(productId);
         
-        if(categoryId.isEmpty()) {
-            this.doGetCategories(request, response);
-        }
-        else {
-            this.doGetCategoryProducts(request, response, categoryId);
-        }
-        
-        
-        
+        request.setAttribute("product", product);
+        RequestDispatcher rd = request.getRequestDispatcher("public/product.jsp");
+        rd.forward(request, response);
     }
 
     /**

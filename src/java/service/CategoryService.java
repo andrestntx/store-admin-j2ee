@@ -11,16 +11,14 @@ import entity.Category;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 import vo.CategoryVO;
 
 /**
  *
  * @author Felipe Iz
  */
-public class CategoryService {
+public class CategoryService extends BaseService {
     
     protected List<CategoryVO> toVO(List<Category> entities) {
         List<CategoryVO> vos = new ArrayList<>();
@@ -39,8 +37,7 @@ public class CategoryService {
     }
     
     public List<CategoryVO> getAllCategories(){
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("storeAdminsPU");
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = this.getNewEntityManager();
         EntityTransaction trans = em.getTransaction();
         
         CategoryDAO categoryDAO = DAOFactory.getCategoryDAO(em);
@@ -58,5 +55,26 @@ public class CategoryService {
         }
                         
         return this.toVO(categories);
+    }
+
+    public CategoryVO getCategory(String categoryId) {
+        EntityManager em = this.getNewEntityManager();
+        EntityTransaction trans = em.getTransaction();
+        
+        CategoryDAO categoryDAO = DAOFactory.getCategoryDAO(em);
+        Category category = null;
+        
+        try {
+            trans.begin();
+            category = categoryDAO.find(new Long(categoryId));
+            trans.commit();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        } finally {
+            em.clear();
+            em.close();
+        }
+                        
+        return category.toVO();
     }
 }

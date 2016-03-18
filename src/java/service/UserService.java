@@ -22,34 +22,31 @@ import vo.UserVO;
  *
  * @author Felipe Iz
  */
-public class UserService extends BaseService{
+public class UserService extends BaseService {
     
-
-        public UserVO getByLogin(String login, String password) {
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory("storeAdminsPU");
-            EntityManager em = emf.createEntityManager();
-            EntityTransaction trans = em.getTransaction();
-            UserDAO userDAO = DAOFactory.getUserDAO(em);
-            User user = null;
-            try {
-                trans.begin();
-                user = userDAO.getUserLogin(login, password);
-                trans.commit();
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
-            } finally {
-                em.clear();
-                em.close();                
-            }
-            if(user == null){
-                return null;
-            }
-            return user.toVO();
+    public UserVO getByLogin(String login, String password) {
+        EntityManager em = this.getNewEntityManager();
+        EntityTransaction trans = em.getTransaction();
+        UserDAO userDAO = DAOFactory.getUserDAO(em);
+        User user = null;
+        try {
+            trans.begin();
+            user = userDAO.getUserLogin(login, password);
+            trans.commit();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        } finally {
+            em.clear();
+            em.close();                
         }
-        
-        public UserVO newUser(UserVO userVO){ 
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("storeAdminsPU");
-        EntityManager em = emf.createEntityManager();
+        if(user == null){
+            return null;
+        }
+        return user.toVO();
+    }
+
+    public UserVO newUser(UserVO userVO){ 
+        EntityManager em = this.getNewEntityManager();
         EntityTransaction trans = em.getTransaction();
         UserDAO studentDAO = DAOFactory.getUserDAO(em);        
         User user = null;
@@ -65,13 +62,12 @@ public class UserService extends BaseService{
             em.clear();
             em.close();
         }  
-        
+
         return user.toVO();
     }
     
     public boolean newUsers(Collection<UserVO> users){ 
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("storeAdminsPU");
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = this.getNewEntityManager();
         EntityTransaction trans = em.getTransaction();
         UserDAO userDAO = DAOFactory.getUserDAO(em);
         boolean flag = true;
@@ -96,8 +92,7 @@ public class UserService extends BaseService{
     }
     
     public UserVO findUser(Long id){
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("storeAdminsPU");
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = this.getNewEntityManager();
         EntityTransaction trans = em.getTransaction();
         UserDAO userDAO = DAOFactory.getUserDAO(em);
         User user = null;
@@ -117,8 +112,7 @@ public class UserService extends BaseService{
     }
     
     public boolean updateUser(UserVO user){
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("storeAdminsPU");
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = this.getNewEntityManager();
         EntityTransaction trans = em.getTransaction();
         UserDAO userDAO = DAOFactory.getUserDAO(em);
         boolean flag = true;
@@ -140,8 +134,7 @@ public class UserService extends BaseService{
     }
     
     public boolean deleteUser(Long id){
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("storeAdminsPU");
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = this.getNewEntityManager();
         EntityTransaction trans = em.getTransaction();
         UserDAO userDAO = DAOFactory.getUserDAO(em);
         boolean flag = true;
@@ -161,8 +154,7 @@ public class UserService extends BaseService{
     }
     
     public List<UserVO> allUsers() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("storeAdminsPU");
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = this.getNewEntityManager();
         EntityTransaction trans = em.getTransaction();
         UserDAO userDAO = DAOFactory.getUserDAO(em);
         List<User> users = null;

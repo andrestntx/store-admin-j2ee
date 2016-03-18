@@ -20,4 +20,8 @@ public class DAOFactory {
     public static CategoryDAO getCategoryDAO(EntityManager em) {
         return new CategoryDAO(em);
     }
+    
+    public static ProductDAO getProductDAO(EntityManager em) {
+        return new ProductDAO(em);
+    }
 }
