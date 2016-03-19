@@ -8,6 +8,7 @@ package entity;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import vo.BaseVO;
 import vo.CategoryVO;
 
 /**
@@ -19,13 +20,6 @@ public class Category extends BaseEntity implements Serializable{
     @Id
     private int id;
     private String name;
-    
-    public CategoryVO toVO(){
-        CategoryVO vo = new CategoryVO();
-        vo.setId(this.getId());
-        vo.setName(this.getName());
-        return vo;
-    }
     
     public int getId() {
         return id;
@@ -41,6 +35,14 @@ public class Category extends BaseEntity implements Serializable{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public CategoryVO toVO(){
+        CategoryVO vo = new CategoryVO();
+        vo.setId(this.getId());
+        vo.setName(this.getName());
+        return vo;
     }
 
 }

@@ -1,4 +1,4 @@
-package servlet;
+package controller;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -18,13 +18,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import service.UserService;
 import vo.UserVO;
+import static java.lang.Integer.parseInt;
 
 /**
  *
  * @author Felipe Iz
  */
 @WebServlet(name = "/UserController", urlPatterns = {"/UserController"})
-public class UserController extends HttpServlet {
+public class UsersController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -68,19 +69,19 @@ public class UserController extends HttpServlet {
         UserService service = new UserService();
         int funcion =parseInt(request.getParameter("funcion"));
         switch(funcion) {
-                   case 1:
-                       Long id = new Long(request.getParameter("id"));
-                       UserVO userVO = service.findUser(id);
-                       request.setAttribute("user", userVO);
-                       RequestDispatcher rd = request.getRequestDispatcher("users/update_user.jsp");
-                       rd.forward(request, response);
-                   break;
-                   case 2:
-                       Collection<UserVO> usersVO = service.allUsers();
-                       request.setAttribute("users", usersVO);
-                       rd = request.getRequestDispatcher("users/lists_users.jsp");
-                       rd.forward(request, response);
-                   break;
+            case 1:
+                Long id = new Long(request.getParameter("id"));
+                UserVO userVO = service.findUser(id);
+                request.setAttribute("user", userVO);
+                RequestDispatcher rd = request.getRequestDispatcher("users/update_user.jsp");
+                rd.forward(request, response);
+            break;
+            case 2:
+                Collection<UserVO> usersVO = service.allUsers();
+                request.setAttribute("users", usersVO);
+                rd = request.getRequestDispatcher("users/lists_users.jsp");
+                rd.forward(request, response);
+            break;
         }  
     }
 
