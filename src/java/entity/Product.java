@@ -6,8 +6,12 @@
 package entity;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import vo.ProductVO;
 
 /**
@@ -17,8 +21,14 @@ import vo.ProductVO;
 @Entity
 public class Product extends BaseEntity implements Serializable{
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @OneToOne (cascade=CascadeType.ALL)
+    private Category category;
+    
     private int created_by;
+    
     private double price;
     private String name;
     private String description;
@@ -30,14 +40,15 @@ public class Product extends BaseEntity implements Serializable{
         vo.setPrice(this.getPrice());
         vo.setDescription(this.getDescription());
         vo.setCreated_by(this.getCreated_by());
+        vo.setCategoryVO(this.getCategory().toVO());
         return vo;
     }
     
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -51,6 +62,10 @@ public class Product extends BaseEntity implements Serializable{
 
     public double getPrice() {
         return price;
+    }
+    
+    public Category getCategory() {
+        return category;
     }
 
     public void setPrice(double price) {
@@ -72,4 +87,10 @@ public class Product extends BaseEntity implements Serializable{
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+    
+
 }

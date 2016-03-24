@@ -5,11 +5,14 @@
  */
 package controller;
 
+import facade.FacadeFactory;
+import facade.ProductFacade;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +23,7 @@ import vo.ProductVO;
  *
  * @author andrestntx
  */
+@WebServlet(name = "SearchController", urlPatterns = {"/search"})
 public class SearchController extends HttpServlet {
 
     /**
@@ -62,10 +66,11 @@ public class SearchController extends HttpServlet {
             throws ServletException, IOException {
         
         String search = request.getParameter("product");
-        ProductService service = new ProductService();
-        List<ProductVO> products = service.searchProducts(search);
+        ProductFacade facade = FacadeFactory.getProductFacade();
+        List<ProductVO> products = facade.searchProducts(search);
         
         request.setAttribute("products", products);
+        
         RequestDispatcher rd = request.getRequestDispatcher("public/search.jsp");
         rd.forward(request, response);
     }

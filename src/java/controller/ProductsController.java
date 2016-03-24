@@ -5,10 +5,13 @@
  */
 package controller;
 
+import facade.FacadeFactory;
+import facade.ProductFacade;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +22,7 @@ import vo.ProductVO;
  *
  * @author andrestntx
  */
+@WebServlet(name = "ProductsController", urlPatterns = {"/products"})
 public class ProductsController extends HttpServlet {
 
     /**
@@ -61,8 +65,8 @@ public class ProductsController extends HttpServlet {
             throws ServletException, IOException {
         
         Long productId = new Long(request.getParameter("product"));
-        ProductService service = new ProductService();
-        ProductVO product = service.getProduct(productId);
+        ProductFacade facade = FacadeFactory.getProductFacade();
+        ProductVO product = facade.getProduct(productId);
         
         request.setAttribute("product", product);
         RequestDispatcher rd = request.getRequestDispatcher("public/product.jsp");

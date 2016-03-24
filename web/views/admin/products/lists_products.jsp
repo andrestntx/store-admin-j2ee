@@ -12,25 +12,25 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="/storeAdmins/public/assets/css/bootstrap.min.css">
         <link rel="stylesheet" href="/storeAdmins/public/assets/css/style.css">
-        <title>Ver Usuarios</title>
+        <title>Ver Categorías</title>
     </head>
     <body>
         <div class="col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8">
-            <h1 class="title-page">Listado de Usuarios</h1>
+            <h1 class="title-page">Listado de Categorías</h1>
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>Nombre</th>
-                        <th>Nombre de usuario</th>                        
-                        <th>Email</th> 
+                        <th>Nombre</th>   
+                        <th>Precio</th>
+                        <th>Descripción</th>
                     </tr>
                 </thead>
-                <c:forEach var="$user" items="${users}"> 
+                <c:forEach var="profuct" items="${profucts}"> 
                     <tbody>
                         <tr>
-                            <td>${user.getName()}</td>
-                            <td>${user.getUsername()}</td>                            
-                            <td>${user.getEmail()}</td>   
+                            <td>${profuct.getName()}</td>
+                            <td>${profuct.getPrice()}</td> 
+                            <td>${profuct.getDescription()}</td> 
                         </tr>
                     </tbody>
                  </c:forEach>

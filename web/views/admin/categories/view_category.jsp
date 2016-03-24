@@ -15,15 +15,13 @@
     </head>
     <body>
         <div class="col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8">
-            <h1 class="title-page">Usuario Registrado</h1>
+            <h1 class="title-page">Categoría Guardada</h1>
 
             <dl class="dl-horizontal">
-                <dt>Nombre:</dt> <dd>${requestScope.user.name}</dd>
-                <dt>Nombre de usuario:</dt> <dd>${requestScope.user.username}</dd>
-                <dt>Email:</dt> <dd>${requestScope.user.email}</dd>                
+                <dt>Nombre:</dt> <dd>${requestScope.category.name}</dd>                              
             </dl>
-            <a class="btn btn-info" href="/storeAdmins/admin/users?user=${requestScope.user.id}">Editar Usuario</a>
-            <a class="btn btn-info" href="/storeAdmins/admin/users">Ver Usuarios</a>
+            <a class="btn btn-info" href="/storeAdmins/admin/catagories?category=${requestScope.category.id}">Editar Categoría</a>
+            <a class="btn btn-info" href="/storeAdmins/admin/catagories">Ver Categoría</a>
             
         </div>
     </body>

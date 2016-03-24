@@ -13,169 +13,83 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 import vo.UserVO;
 
 /**
  *
  * @author Felipe Iz
  */
-public class UserService extends BaseService {
+public class UserService {
     
-    public UserVO getByLogin(String login, String password) {
-        EntityManager em = this.getNewEntityManager();
-        EntityTransaction trans = em.getTransaction();
+    private static UserService service;
+    
+    private UserService() {}
+    
+    public static UserService getService() {
+        if(service == null) {
+            service = new UserService(); 
+        }
+        return service;
+    }
+    
+    protected List<UserVO> toVO(List<User> entities) {
+        List<UserVO> vos = new ArrayList<>();
+        for (User entity : entities) {
+            vos.add(entity.toVO());
+        }
+        return vos;
+    }
+    
+    public UserVO getByLogin(String login, String password, EntityManager em) {
         UserDAO userDAO = DAOFactory.getUserDAO(em);
-        User user = null;
-        try {
-            trans.begin();
-            user = userDAO.getUserLogin(login, password);
-            trans.commit();
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        } finally {
-            em.clear();
-            em.close();                
-        }
-        if(user == null){
-            return null;
-        }
-        return user.toVO();
+        return userDAO.getUserLogin(login, password).toVO();
     }
 
-    public UserVO newUser(UserVO userVO){ 
-        EntityManager em = this.getNewEntityManager();
-        EntityTransaction trans = em.getTransaction();
-        UserDAO studentDAO = DAOFactory.getUserDAO(em);        
-        User user = null;
-        user = userVO.toEntity();
-        try {
-            trans.begin();
-            studentDAO.save(user);
-            trans.commit();
-        } catch (Exception e) {
-            trans.rollback();            
-            System.err.println(e.getMessage());
-        } finally {
-            em.clear();
-            em.close();
-        }  
+    public UserVO newUser(UserVO userVO, EntityManager em){ 
+        UserDAO userDAO = DAOFactory.getUserDAO(em);        
+        User user = userVO.toEntity();
+        userDAO.save(user);
+        return user.toVO();
+    }
+    
+    public boolean newUsers(Collection<UserVO> usersVO, EntityManager em){ 
+        UserDAO userDAO = DAOFactory.getUserDAO(em);
+        for (Iterator iterator = usersVO.iterator(); iterator.hasNext();) {
+            UserVO user = (UserVO)iterator.next();
+            userDAO.save(user.toEntity());
+        }
+        return true;
+    }
+    
+    public UserVO getUser(Long id, EntityManager em){
+        UserDAO userDAO = DAOFactory.getUserDAO(em);
+        User user = userDAO.find(id);
+        
+        if(user != null){
+            return user.toVO();
+        }
+       
+        return null;
+    }
+    
+    public UserVO updateUser(UserVO userVO, EntityManager em){
+        UserDAO userDAO = DAOFactory.getUserDAO(em);  
+        User user = userDAO.find(userVO.getId());
 
-        return user.toVO();
-    }
-    
-    public boolean newUsers(Collection<UserVO> users){ 
-        EntityManager em = this.getNewEntityManager();
-        EntityTransaction trans = em.getTransaction();
-        UserDAO userDAO = DAOFactory.getUserDAO(em);
-        boolean flag = true;
-        
-        try {
-            trans.begin();
-            for (Iterator iterator = users.iterator(); iterator.hasNext();) {
-                UserVO user = (UserVO)iterator.next();
-                userDAO.save(user.toEntity());
-            }
-            trans.commit();
-        } catch (Exception e) {
-            trans.rollback();
-            flag = false;
-            System.err.println(e.getMessage());
-        } finally {
-            em.clear();
-            em.close();
-        }  
-        
-        return flag;
-    }
-    
-    public UserVO findUser(Long id){
-        EntityManager em = this.getNewEntityManager();
-        EntityTransaction trans = em.getTransaction();
-        UserDAO userDAO = DAOFactory.getUserDAO(em);
-        User user = null;
-        
-        try {
-            trans.begin();
-            user = userDAO.find(id);
-            trans.commit();
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        } finally {
-            em.clear();
-            em.close();
+        if( user != null) {
+            return userDAO.update(user).toVO();
         }
-        
-        return user.toVO();
+       
+        return null;
     }
     
-    public boolean updateUser(UserVO user){
-        EntityManager em = this.getNewEntityManager();
-        EntityTransaction trans = em.getTransaction();
+    public boolean deleteUser(Long id, EntityManager em){
         UserDAO userDAO = DAOFactory.getUserDAO(em);
-        boolean flag = true;
-        
-        try {
-            trans.begin();
-            userDAO.update(user.toEntity());
-            trans.commit();
-        } catch (Exception e) {
-            trans.rollback();
-            flag = false;
-            System.err.println(e.getMessage());
-        } finally {
-            em.clear();
-            em.close();
-        }   
-        
-        return flag;
+        return userDAO.delete(id);
     }
     
-    public boolean deleteUser(Long id){
-        EntityManager em = this.getNewEntityManager();
-        EntityTransaction trans = em.getTransaction();
+    public List<UserVO> allUsers(EntityManager em) {
         UserDAO userDAO = DAOFactory.getUserDAO(em);
-        boolean flag = true;
-        
-        try {
-            trans.begin();
-            flag = userDAO.delete(id);
-            trans.commit();
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        } finally {
-            em.clear();
-            em.close();
-        }  
-        
-        return flag;
+        return this.toVO(userDAO.getAll());
     }
-    
-    public List<UserVO> allUsers() {
-        EntityManager em = this.getNewEntityManager();
-        EntityTransaction trans = em.getTransaction();
-        UserDAO userDAO = DAOFactory.getUserDAO(em);
-        List<User> users = null;
-        List<UserVO> usersVO = new ArrayList<UserVO>();
-        
-        try {
-            trans.begin();
-            users = userDAO.getAll();
-            trans.commit();
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        } finally {
-            em.clear();
-            em.close();
-        }
-        
-        for (User user : users) {
-            usersVO.add(user.toVO());
-        }
-        
-        return usersVO;
-    }
-    
 }

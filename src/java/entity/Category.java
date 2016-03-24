@@ -6,9 +6,13 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import vo.BaseVO;
+import javax.persistence.OneToMany;
 import vo.CategoryVO;
 
 /**
@@ -18,14 +22,18 @@ import vo.CategoryVO;
 @Entity
 public class Category extends BaseEntity implements Serializable{
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
     
-    public int getId() {
+    @OneToMany (cascade=CascadeType.ALL)
+    private List<Product> products;
+    
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -37,11 +45,29 @@ public class Category extends BaseEntity implements Serializable{
         this.name = name;
     }
 
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+
     @Override
     public CategoryVO toVO(){
         CategoryVO vo = new CategoryVO();
         vo.setId(this.getId());
         vo.setName(this.getName());
+        
+        /*if(this.getProducts() != null){
+            List<ProductVO> productsVO = new ArrayList<>();
+            for (Product product : this.getProducts()) {
+                productsVO.add(product.toVO());
+            }
+            vo.setProductsVO(productsVO);
+        }*/
+        
         return vo;
     }
 

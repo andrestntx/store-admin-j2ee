@@ -6,14 +6,16 @@
 package vo;
 
 import entity.Category;
+import java.util.List;
 
 /**
  *
  * @author andrestntx
  */
 public class CategoryVO extends BaseVO {
-    private int id;
+    private Long id;
     private String name;
+    private List<ProductVO> productsVO;
 
     public CategoryVO(String name) {
         this.name = name;
@@ -25,15 +27,16 @@ public class CategoryVO extends BaseVO {
     public Category toEntity(){
         Category entity = new Category();        
         entity.setName(this.getName());
-                
+        entity.setId(this.getId());
+               
         return entity;
     }
     
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -44,5 +47,15 @@ public class CategoryVO extends BaseVO {
     public void setName(String name) {
         this.name = name;
     }
+
+    public List<ProductVO> getProductsVO() {
+        return productsVO;
+    }
+
+    public void setProductsVO(List<ProductVO> productsVO) {
+        this.productsVO = productsVO;
+    }
+    
+    
 
 }

@@ -31,7 +31,8 @@ public class UserVO extends BaseVO {
     }
     
     public User toEntity(){
-        User entity = new User();        
+        User entity = new User();     
+        entity.setId(this.getId());
         entity.setName(this.getName());
         entity.setUsername(this.getUsername());
         entity.setEmail(this.getEmail());
