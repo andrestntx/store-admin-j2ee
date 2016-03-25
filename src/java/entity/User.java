@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import vo.UserVO;
 
 /**
@@ -17,6 +18,7 @@ import vo.UserVO;
  * @author andrestntx
  */
 @Entity
+@Table(name = "users")
 public class User extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

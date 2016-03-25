@@ -12,11 +12,12 @@ import entity.Product;
  * @author andrestntx
  */
 public class ProductVO extends BaseVO {
-    private int id;
+    private Long id;
     private int created_by;
     private double price;
     private String name;
     private String description;
+    private CategoryVO categoryVO;
 
     public ProductVO(int created_by, double price, String name, String description) {
         this.created_by = created_by;
@@ -25,25 +26,35 @@ public class ProductVO extends BaseVO {
         this.description = description;
     }
     
+    public ProductVO(int created_by, double price, String name, String description, CategoryVO categoryVO) {
+        this.created_by = created_by;
+        this.price = price;
+        this.name = name;
+        this.description = description;
+        this.categoryVO = categoryVO;
+    }
+    
     public ProductVO(){
     
     }
     
     public Product toEntity(){
-        Product entity = new Product();        
+        Product entity = new Product();     
+        entity.setId(this.getId());
         entity.setName(this.getName());
         entity.setCreated_by(this.getCreated_by());
         entity.setDescription(this.getDescription());
         entity.setPrice(this.getPrice());
+        entity.setCategory(this.getCategoryVO().toEntity());
                 
         return entity;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -78,6 +89,13 @@ public class ProductVO extends BaseVO {
     public void setDescription(String description) {
         this.description = description;
     }
-    
-    
+
+    public CategoryVO getCategoryVO() {
+        return categoryVO;
+    }
+
+    public void setCategoryVO(CategoryVO categoryVO) {
+        this.categoryVO = categoryVO;
+    }
+
 }

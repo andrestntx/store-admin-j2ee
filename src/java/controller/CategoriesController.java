@@ -5,6 +5,9 @@
  */
 package controller;
 
+import facade.CategoryFacade;
+import facade.FacadeFactory;
+import facade.ProductFacade;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -19,6 +22,7 @@ import service.CategoryService;
 import service.ProductService;
 import vo.CategoryVO;
 import vo.ProductVO;
+import vow.ProductVOW;
 
 /**
  *
@@ -26,34 +30,34 @@ import vo.ProductVO;
  */
 @WebServlet(name = "CategoriesController", urlPatterns = {"/categories"})
 public class CategoriesController extends HttpServlet {
-
-    protected void doGetCategories(HttpServletRequest request, HttpServletResponse response) 
-        throws ServletException, IOException {
-        
-        CategoryService service = new CategoryService();
-        List<CategoryVO> categories = service.getAllCategories();
-        
-        request.setAttribute("categoires", categories);
-        RequestDispatcher rd = request.getRequestDispatcher("public/categories.jsp");
+    
+    protected void doGetPageError(HttpServletRequest request, HttpServletResponse response, String message) throws ServletException, IOException{
+        request.setAttribute("message", message);
+        RequestDispatcher rd = request.getRequestDispatcher("erros/404.jsp");
         rd.forward(request, response);
     }
     
-    protected void doGetCategoryProducts(HttpServletRequest request, HttpServletResponse response, String categoryId)
+    protected RequestDispatcher doGetCategories(HttpServletRequest request, HttpServletResponse response, CategoryFacade facade) 
         throws ServletException, IOException {
         
-        List<ProductVO> products = new ArrayList<>();
-        CategoryService categoryService = new CategoryService();
-        CategoryVO category = categoryService.getCategory(categoryId);
-        
-        if(category != null) {
-            ProductService productService = new ProductService();
-            products = productService.getProductsByCategory(categoryId);
+        List<CategoryVO> categories = facade.allCategories();
+        request.setAttribute("categoires", categories);
+        RequestDispatcher rd = request.getRequestDispatcher("views/guest/categories.jsp");
+        return rd; 
+    }
+    
+    protected RequestDispatcher doGetCategoryProducts(HttpServletRequest request, HttpServletResponse response, ProductFacade facade, Long categoryId)
+        throws ServletException, IOException {
+                
+        ProductVOW productVOW = facade.getProductsOfCategory(categoryId);
+        if(productVOW == null){
+            this.doGetPageError(request, response, "La categoría no existe");
         }
         
-        request.setAttribute("category", category);
-        request.setAttribute("products", products);
-        RequestDispatcher rd = request.getRequestDispatcher("public/products.jsp");
-        rd.forward(request, response);
+        request.setAttribute("productVOW", productVOW);
+                RequestDispatcher rd = request.getRequestDispatcher("views/guest/products.jsp");
+        
+        return rd;
     }
     
     /**
@@ -96,16 +100,17 @@ public class CategoriesController extends HttpServlet {
             throws ServletException, IOException {
         
         String categoryId = request.getParameter("category");
+        RequestDispatcher rd = null;
+        CategoryFacade categoryFacade = FacadeFactory.getCategoryFacade();
         
-        if(categoryId.isEmpty()) {
-            this.doGetCategories(request, response);
+        if(categoryId == null) {
+            rd = this.doGetCategories(request, response, categoryFacade);
         }
         else {
-            this.doGetCategoryProducts(request, response, categoryId);
-        }
+            rd = this.doGetCategoryProducts(request, response, FacadeFactory.getProductFacade(), new Long(categoryId));
+        }   
         
-        
-        
+        rd.forward(request, response);
     }
 
     /**

@@ -31,8 +31,8 @@ public class BaseDAO <T> {
         return this.em.find(this.type, id);
     }
     
-    public void update(T entity){
-        this.em.merge(entity);
+    public T update(T entity){
+        return this.em.merge(entity);
     }
     
     public boolean delete(Long id){
@@ -54,14 +54,12 @@ public class BaseDAO <T> {
     }
     
     public List<T> getAll(int maxResults) {
-        Query jpql = this.em.createQuery("select u from :Entity u").setMaxResults(maxResults);  
-        jpql.setParameter("Entity", this.type.getSimpleName());
+        Query jpql = this.em.createQuery("select u from " + this.type.getSimpleName() + " u").setMaxResults(maxResults);  
         return (List<T>)jpql.getResultList();
     }
     
     public List<T> getByAttribute(String attribute, String value){
-        Query jpql = this.em.createQuery("select s from :Entity s where s.:attribute.id = :value");
-        jpql.setParameter("Entity", this.type.getSimpleName());
+        Query jpql = this.em.createQuery("select s from " + this.type.getSimpleName() + " s where s.:attribute.id = :value");
         jpql.setParameter("attribute", attribute);
         jpql.setParameter("value", value);
         
@@ -69,8 +67,7 @@ public class BaseDAO <T> {
     }
     
     public List<T> getLikeByAttribute(String attribute, String value){
-        Query jpql = this.em.createQuery("select s from :Entity s where s.:attribute.id LIKE % :value %");
-        jpql.setParameter("Entity", this.type.getSimpleName());
+        Query jpql = this.em.createQuery("select s from " + this.type.getSimpleName() + " s where s.:attribute.id LIKE % :value %");
         jpql.setParameter("attribute", attribute);
         jpql.setParameter("value", value);
         

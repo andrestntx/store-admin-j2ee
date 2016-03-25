@@ -3,17 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package service;
+package facade;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 /**
  *
  * @author andrestntx
  */
-public class BaseService {
+public class BaseFacade {
     
     protected EntityManager getNewEntityManager(){
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("storeAdminsPU");
@@ -21,4 +22,12 @@ public class BaseService {
         return entityManager;
     }
     
+    protected EntityTransaction getEntityTransaction(EntityManager em) {
+        return em.getTransaction();
+    }
+    
+    protected void closeAndClearEntityManager(EntityManager em){
+        em.clear();
+        em.close();
+    }     
 }

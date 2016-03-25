@@ -11,14 +11,28 @@ import entity.Product;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
+import vo.CategoryVO;
 import vo.ProductVO;
 
 /**
  *
  * @author Felipe Iz
  */
-public class ProductService extends BaseService {
+public class ProductService {
+    
+    private static ProductService service;
+    
+    private ProductService() {
+
+    }
+    
+    public static ProductService getService() {
+        if(service == null) {
+            service = new ProductService(); 
+        }
+        
+        return service;
+    }
     
     protected List<ProductVO> toVO(List<Product> entities) {
         List<ProductVO> vos = new ArrayList<>();
@@ -27,98 +41,60 @@ public class ProductService extends BaseService {
         }
         return vos;
     }
-    
-    public void persist(ProductVO vo, EntityManager entityManager) {
-        Product entity = new Product();
-        entity.setId(vo.getId());
-        entity.setDescription(vo.getDescription());
-        entity.setName(vo.getName());
-        entity.setPrice(vo.getPrice());
-        
-        ProductDAO productDAO = new ProductDAO(entityManager);
+   
+    public List<ProductVO> allProducts(EntityManager em) {
+        ProductDAO productDAO = DAOFactory.getProductDAO(em);
+        return this.toVO(productDAO.getAll());               
     }
 
-    public List<ProductVO> getAllProducts() {
-        EntityManager em = this.getNewEntityManager();
-        EntityTransaction trans = em.getTransaction();
-        
+    public List<ProductVO> getProductsOfCategory(Long categoryId, EntityManager em) {
         ProductDAO productDAO = DAOFactory.getProductDAO(em);
-        List<Product> products = null;
-        
-        try {
-            trans.begin();
-            products = productDAO.getAll();
-            trans.commit();
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        } finally {
-            em.clear();
-            em.close();
-        }
-                        
-        return this.toVO(products);
+        return this.toVO(productDAO.getByAttribute("category_id", categoryId.toString()));
     }
 
-    public List<ProductVO> getProductsByCategory(String id) {
-        EntityManager em = this.getNewEntityManager();
-        EntityTransaction trans = em.getTransaction();
-        
+    public ProductVO getProduct(Long productId, EntityManager em) {
         ProductDAO productDAO = DAOFactory.getProductDAO(em);
-        List<Product> products = null;
+        Product product = productDAO.find(new Long(productId)); 
         
-        try {
-            trans.begin();
-            products = productDAO.getByAttribute("category_id", id);
-            trans.commit();
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        } finally {
-            em.clear();
-            em.close();
+        if(product != null){
+            return product.toVO();
         }
-                        
-        return this.toVO(products);
+       
+        return null;
     }
 
-    public ProductVO getProduct(Long productId) {
-        EntityManager em = this.getNewEntityManager();
-        EntityTransaction trans = em.getTransaction();
-        
+    public List<ProductVO> searchProducts(String search, EntityManager em) {
         ProductDAO productDAO = DAOFactory.getProductDAO(em);
-        Product product = null;
-        
-        try {
-            trans.begin();
-            product = productDAO.find(new Long(productId));
-            trans.commit();
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        } finally {
-            em.clear();
-            em.close();
+        return this.toVO(productDAO.getLikeByAttribute("name", search));
+    }
+
+    public ProductVO updateProduct(ProductVO productVO, CategoryVO categoryVO, EntityManager em){
+        ProductDAO productDAO = DAOFactory.getProductDAO(em);  
+        Product product = productDAO.find(productVO.getId());
+
+        if( product != null) {
+            product.setCategory(categoryVO.toEntity());
+            return productDAO.update(product).toVO();
         }
-                        
+       
+        return null;
+    }
+
+    public ProductVO newProduct(ProductVO productVO, CategoryVO categoryVO, EntityManager em){ 
+        productVO.setCategoryVO(categoryVO);
+        ProductDAO productDAO = DAOFactory.getProductDAO(em);        
+        Product product = productVO.toEntity();
+        productDAO.save(product);
         return product.toVO();
     }
-
-    public List<ProductVO> searchProducts(String search) {
-        EntityManager em = this.getNewEntityManager();
-        EntityTransaction trans = em.getTransaction();
-        
+    
+    public boolean deleteProduct(Long id, EntityManager em){
         ProductDAO productDAO = DAOFactory.getProductDAO(em);
-        List<Product> products = null;
-        
-        try {
-            trans.begin();
-            products = productDAO.getLikeByAttribute("name", search);
-            trans.commit();
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        } finally {
-            em.clear();
-            em.close();
-        }
-                        
-        return this.toVO(products);
+        return productDAO.delete(id);
     }
+    
+
+
+
+
 }
