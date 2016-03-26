@@ -1,4 +1,5 @@
 /build/
 /dist/
 /src/conf/
+/src/conf/persistence.xml
 /nbproject/private/private.xml

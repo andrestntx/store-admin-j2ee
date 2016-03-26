@@ -5,7 +5,6 @@
  */
 package dao;
 
-import entity.Category;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;

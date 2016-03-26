@@ -28,6 +28,7 @@ public class UserFacade extends BaseFacade {
         try {
             trans.begin();
             users = service.allUsers(em);
+            System.out.println(users.size());
             trans.commit();
         } catch (Exception e) {
             trans.rollback();            

@@ -88,7 +88,7 @@ public class UsersController extends HttpServlet {
         return request.getRequestDispatcher("views/admin/users/lists_users.jsp");
     }
     
-    protected RequestDispatcher doGetUser(HttpServletRequest request, HttpServletResponse response, UserFacade facade, Long id)
+    protected RequestDispatcher doGetUser(HttpServletRequest request, HttpServletResponse response, UserFacade facade, Long id,String option)
         throws ServletException, IOException {
 
         UserVO userVO = facade.getUser(id);
@@ -97,7 +97,10 @@ public class UsersController extends HttpServlet {
             return rd;
         }
         request.setAttribute("user", userVO);
-        return request.getRequestDispatcher("views/admin/users/update_user.jsp");
+        if(option != null){
+            return request.getRequestDispatcher("views/admin/users/edit_user.jsp");
+        }
+        return request.getRequestDispatcher("views/admin/users/view_user.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -115,17 +118,29 @@ public class UsersController extends HttpServlet {
         
         UserFacade facade = FacadeFactory.getUserFacade();
         String id = request.getParameter("user");
+        String option = request.getParameter("option");
         RequestDispatcher rd = null;
-                
-        if(id == null){
-            rd = doGetUsers(request, response, facade);
-        }
-        else if(Handler.isLong(id)){
-            rd = doGetUser(request, response, facade, new Long(id));
-        } 
-        else {
-            rd = Handler.doGetPageError(request, response, "El usuario no existe"); 
-        }
+        
+        if(option != null){
+            if("create".equals(option)){
+                rd = request.getRequestDispatcher("views/admin/users/new_user.jsp");
+            }else{
+                if("edit".equals(option)){
+                    rd = doGetUser(request, response, facade, new Long(id),option);
+                }
+            }
+        } else{
+           if(id == null){
+                rd = doGetUsers(request, response, facade);
+            }
+            else if(Handler.isLong(id)){
+                rd = doGetUser(request, response, facade, new Long(id), null);
+            } 
+            else {
+                rd = Handler.doGetPageError(request, response, "El usuario no existe"); 
+            } 
+        }               
+        
         
         rd.forward(request, response);
     }
@@ -148,7 +163,14 @@ public class UsersController extends HttpServlet {
     protected RequestDispatcher doPutUser(HttpServletRequest request, HttpServletResponse response, UserFacade facade) 
             throws ServletException, IOException {
         
-        UserVO userVO = this.getUserVO(request);
+        Long id = new Long(request.getParameter("id"));        
+        UserVO userVO = facade.getUser(id);
+        userVO.setName(request.getParameter("name"));
+        userVO.setUsername(request.getParameter("username"));
+        userVO.setEmail(request.getParameter("email"));
+        if(!request.getParameter("password").isEmpty()){
+          userVO.setPassword(request.getParameter("password"));  
+        }        
         userVO = facade.updateUser(userVO);
         this.existOrFail(request, response, userVO);
         

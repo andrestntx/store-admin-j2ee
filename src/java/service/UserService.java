@@ -73,14 +73,8 @@ public class UserService {
     }
     
     public UserVO updateUser(UserVO userVO, EntityManager em){
-        UserDAO userDAO = DAOFactory.getUserDAO(em);  
-        User user = userDAO.find(userVO.getId());
-
-        if( user != null) {
-            return userDAO.update(user).toVO();
-        }
-       
-        return null;
+        UserDAO userDAO = DAOFactory.getUserDAO(em);
+        return userDAO.update(userVO.toEntity()).toVO();
     }
     
     public boolean deleteUser(Long id, EntityManager em){
