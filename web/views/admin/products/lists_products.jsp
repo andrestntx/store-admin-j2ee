@@ -38,30 +38,37 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Listado de Categorías</h1>
+                    <h1 class="page-header">Listado de Productos</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
             <div class="row">
-                <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>   
-                        <th>Precio</th>
-                        <th>Descripción</th>
-                    </tr>
-                </thead>
-                <c:forEach var="profuct" items="${profucts}"> 
-                    <tbody>
+                <div class="col-xs-12">
+                    <table class="table table-hover">
+                    <thead>
                         <tr>
-                            <td>${profuct.getName()}</td>
-                            <td>${profuct.getPrice()}</td> 
-                            <td>${profuct.getDescription()}</td> 
+                            <th>Nombre</th>   
+                            <th>Precio</th>
+                            <th>Descripción</th>
+                            <th>Opción</th>
                         </tr>
-                    </tbody>
-                 </c:forEach>
-                </table>
+                    </thead>
+                    <c:forEach var="product" items="${products}"> 
+                        <tbody>
+                            <tr>
+                                <td>${product.name}</td>
+                                <td>${product.price}</td> 
+                                <td>${product.description}</td> 
+                                <td>
+                                    <a class="btn btn-info" href="/storeAdmins/admin-products?product=${product.id}">Ver</a>
+                                    <a class="btn btn-warning" href="/storeAdmins/admin-products?product=${product.id}&option=edit">Editar</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                     </c:forEach>
+                    </table>
+                </div>
             </div>
                 
         </div>

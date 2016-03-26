@@ -37,7 +37,12 @@
             <div id="page-wrapper">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">Categoría Guardada</h1>
+                        <h1 class="page-header">Categoría
+                            <a class="btn btn-success" href="/storeAdmins/admin-categories">Todas</a>
+                            <a class="btn btn-warning" href="/storeAdmins/admin-categories?category=${requestScope.category.id}&option=edit">
+                                <i class="fa fa-pencil"></i> Editar
+                            </a>
+                        </h1>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
@@ -51,8 +56,7 @@
                     <dt>Nombre:</dt> <dd>${requestScope.category.name}</dd>                              
                     <dt>Descripción</dt> <dd>${requestScope.category.description}</dd>                              
                 </dl>
-                <a class="btn btn-success" href="/storeAdmins/admin-categories">Categorías</a>
-                <a class="btn btn-warning" href="/storeAdmins/admin-categories?category=${requestScope.category.id}&option=edit">Editar</a>
+                
                 </div>
             </div>
             <!-- /#page-wrapper -->

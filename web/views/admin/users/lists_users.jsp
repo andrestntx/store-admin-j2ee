@@ -51,14 +51,19 @@
                         <th>Nombre</th>
                         <th>Nombre de usuario</th>                        
                         <th>Email</th> 
+                        <th>Opción</th> 
                     </tr>
                 </thead>
                 <c:forEach var="$user" items="${users}"> 
                     <tbody>
                         <tr>
-                            <td>${user.getName()}</td>
-                            <td>${user.getUsername()}</td>                            
-                            <td>${user.getEmail()}</td>   
+                            <td>${user.name}</td>
+                            <td>${user.username}</td>                            
+                            <td>${user.email}</td>  
+                            <td>
+                                <a class="btn btn-info" href="/storeAdmins/admin-users?user=${user.id}">Ver</a>
+                                <a class="btn btn-warning" href="/storeAdmins/admin-users?user=${user.id}&option=edit">Editar</a>
+                            </td>
                         </tr>
                     </tbody>
                  </c:forEach>

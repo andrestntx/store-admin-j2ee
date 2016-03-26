@@ -37,21 +37,22 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Editar Registrado</h1>
+                    <h1 class="page-header">Usuario
+                        <a class="btn btn-success" href="/storeAdmins/admin-users">Todos</a>
+                        <a class="btn btn-warning" href="/storeAdmins/admin-users?user=${requestScope.user.id}&option=edit">
+                            <i class="fa fa-pencil"></i> Editar
+                        </a>
+                    </h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
             <div class="row">
-                
                 <dl class="dl-horizontal">
-                <dt>Nombre:</dt> <dd>${requestScope.user.name}</dd>
-                <dt>Nombre de usuario:</dt> <dd>${requestScope.user.username}</dd>
-                <dt>Email:</dt> <dd>${requestScope.user.email}</dd>                
-            </dl>
-            <a class="btn btn-info" href="/storeAdmins/admin/users?user=${requestScope.user.id}">Editar Usuario</a>
-            <a class="btn btn-info" href="/storeAdmins/admin/users">Ver Usuarios</a>
-                                          
+                    <dt>Nombre:</dt> <dd>${requestScope.user.name}</dd>
+                    <dt>Nombre de usuario:</dt> <dd>${requestScope.user.username}</dd>
+                    <dt>Email:</dt> <dd>${requestScope.user.email}</dd>                
+                </dl>                                          
             </div>
         </div>
         <!-- /#page-wrapper -->

@@ -47,7 +47,8 @@
                     <!-- /.col-lg-12 -->
                 </div>
                 <!-- /.row -->
-                <div class="row">                
+                <div class="row">   
+                    <div class="col-xs-12">
                     <table class="table table-hover">
                     <thead>
                         <tr>
@@ -71,6 +72,7 @@
                         </tbody>
                      </c:forEach>
                 </table>              
+                    </div>
                 </div>
             </div>
             <!-- /#page-wrapper -->

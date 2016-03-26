@@ -37,19 +37,28 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Producto Guardado</h1>
+                    <h1 class="page-header">Producto
+                        <a class="btn btn-success" href="/storeAdmins/admin-products">Todos</a>
+                        <a class="btn btn-warning" href="/storeAdmins/admin-products?product=${requestScope.product.id}&option=edit">
+                            <i class="fa fa-pencil"></i> Editar
+                        </a>
+                    </h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
-            <div class="row">                
+            <div class="row"> 
+                <div class="row">                
+                   <c:if test="${message != null}" var="exsits_message" scope="request">
+                    <p class="alert alert-info">${requestScope.message}</p>
+                </c:if>
+                
                 <dl class="dl-horizontal">
-                <dt>Nombre:</dt> <dd>${requestScope.product.name}</dd>
-                <dt>Precio:</dt> <dd>${requestScope.product.price}</dd>
-                <dt>Descripción</dt> <dd>${requestScope.product.description}</dd>
+                    <dt>Nombre:</dt> <dd>${requestScope.product.name}</dd>
+                    <dt>Precio:</dt> <dd>${requestScope.product.price}</dd>
+                    <dt>Descripción</dt> <dd>${requestScope.product.description}</dd>
                 </dl>
-                <a class="btn btn-info" href="/storeAdmins/admin/products?product=${requestScope.product.id}">Editar Producto</a>
-                <a class="btn btn-info" href="/storeAdmins/admin/products">Ver Producto</a>
+                
                                              
             </div>
         </div>

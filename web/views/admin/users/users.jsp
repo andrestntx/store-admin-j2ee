@@ -53,7 +53,7 @@
                                 </div>                                
                             </div>
                         </div>
-                        <a href="/storeAdmins/views/admin/users/new_user.jsp">
+                        <a href="/storeAdmins/admin-users?option=create">
                             <div class="panel-footer">
                                 <span class="pull-left">Nuevo</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -72,7 +72,7 @@
                                 </div>                                
                             </div>
                         </div>
-                        <a href="/storeAdmins/views/admin/users/lists_users.jsp">
+                        <a href="/storeAdmins/admin-users">
                             <div class="panel-footer">
                                 <span class="pull-left">Ver</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>

@@ -53,7 +53,7 @@
                                 </div>                                
                             </div>
                         </div>
-                        <a href="/storeAdmins/views/admin/products/new_product.jsp">
+                        <a href="/storeAdmins/admin-products?option=create">
                             <div class="panel-footer">
                                 <span class="pull-left">Nuevo</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -72,7 +72,7 @@
                                 </div>                                
                             </div>
                         </div>
-                        <a href="/storeAdmins/views/admin/products/lists_products.jsp">
+                        <a href="/storeAdmins/views/admin-products">
                             <div class="panel-footer">
                                 <span class="pull-left">Ver Detalles</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>

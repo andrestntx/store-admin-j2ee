@@ -43,24 +43,25 @@
                     <!-- /.col-lg-12 -->
                 </div>
                 <!-- /.row -->
-                <div class="row">                
-                    <form method="POST" action="/storeAdmins/admin-categories" class="form-horizontal">
-
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">Nombre</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" type="text" name="name" value=""/>
-                        </div>
-                    </div>  
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">Descripción</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" type="text" name="description" value=""/>
-                        </div>
-                    </div>  
-                    <input type="hidden" name="option" value="1">
-                    <input type="submit" class="btn btn-info col-sm-offset-2" value="Guardar"/>
-                </form>    
+                <div class="row">      
+                    <div class="col-xs-12">
+                        <form method="POST" action="/storeAdmins/admin-categories" class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Nombre</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="text" name="name" value=""/>
+                                </div>
+                            </div>  
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Descripción</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="text" name="description" value=""/>
+                                </div>
+                            </div>  
+                            <input type="hidden" name="option" value="1">
+                            <input type="submit" class="btn btn-info col-sm-offset-2" value="Guardar"/>
+                        </form>    
+                    </div>
                 </div>
             </div>
             <!-- /#page-wrapper -->
