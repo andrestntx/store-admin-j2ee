@@ -17,7 +17,7 @@ import javax.persistence.Query;
 public class UserDAO extends BaseDAO<User>{     
 
    public UserDAO(EntityManager em) {
-        super(em);
+        super(em, User.class);
     }
    
    public User getUserLogin(String login, String password){

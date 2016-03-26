@@ -3,12 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/C:/Users/Felipe%20Iz/Documents/NetBeansProjects/PA2/storeAdmins/src/java/service/UserService.java</file>
-            <file>file:/C:/Users/Felipe%20Iz/Documents/NetBeansProjects/PA2/storeAdmins/nbproject/build-impl.xml</file>
-=======
-            <file>file:/Users/andrestntx/NetBeansProjects/storeAdmins/src/java/controller/admin/ProductsController.java</file>
->>>>>>> c26805c71e01ca01ef18aced0a5331fc1aadbfab
+            <file>file:/Users/andrestntx/NetBeansProjects/storeAdmins/web/WEB-INF/web.xml</file>
+            <file>file:/Users/andrestntx/NetBeansProjects/storeAdmins/web/WEB-INF/glassfish-resources.xml</file>
+            <file>file:/Users/andrestntx/NetBeansProjects/storeAdmins/src/conf/persistence.xml</file>
         </group>
     </open-files>
 </project-private>

@@ -5,6 +5,7 @@
  */
 package controller.admin;
 
+import controller.Handler;
 import facade.CategoryFacade;
 import facade.FacadeFactory;
 import java.io.IOException;
@@ -53,28 +54,25 @@ public class CategoriesController extends HttpServlet {
     }
     
     protected CategoryVO getNewCategoryVO(HttpServletRequest request){
-        String name = request.getParameter("name"); 
-        return new CategoryVO(name);
+        String name = request.getParameter("name");
+        String description = request.getParameter("description");
+        return new CategoryVO(name, description);
     }
     
-    protected CategoryVO getCategoryVO(HttpServletRequest request){
+    protected CategoryVO getCategoryVO(HttpServletRequest request, Long id){
         CategoryVO categoryVO = this.getNewCategoryVO(request);
-        categoryVO.setId(new Long(request.getParameter("id")));
+        categoryVO.setId(id);
         return categoryVO;
     }
     
-    protected void doGetPageError(HttpServletRequest request, HttpServletResponse response, String message) throws ServletException, IOException{
-        request.setAttribute("message", message);
-        RequestDispatcher rd = request.getRequestDispatcher("erros/404.jsp");
-        rd.forward(request, response);
-    }
-    
-    protected void existOrFail(HttpServletRequest request, HttpServletResponse response, CategoryVO categoryVO) 
+    protected RequestDispatcher existOrFail(HttpServletRequest request, HttpServletResponse response, CategoryVO categoryVO) 
             throws ServletException, IOException {
         
         if(categoryVO == null) {
-            this.doGetPageError(request, response, "La categoría que está buscando no existe");
+            return Handler.doGetPageError(request, response, "La categoría que está buscando no existe");
         }
+        
+        return null;
     }
     
     protected RequestDispatcher doGetCategories(HttpServletRequest request, HttpServletResponse response, CategoryFacade facade) 
@@ -85,18 +83,24 @@ public class CategoriesController extends HttpServlet {
         return request.getRequestDispatcher("views/admin/categories/lists_categories.jsp");
     }
     
+    protected RequestDispatcher doGetCreateCategory(HttpServletRequest request, HttpServletResponse response, CategoryFacade facade)
+        throws ServletException, IOException {
+        return request.getRequestDispatcher("views/admin/categories/new_category.jsp");
+    }
+    
     protected RequestDispatcher doGetCategory(HttpServletRequest request, HttpServletResponse response, CategoryFacade facade, Long id)
         throws ServletException, IOException {
         
         CategoryVO categoryVO = facade.getCategory(id);
-        this.existOrFail(request, response, categoryVO);
+        RequestDispatcher rd = this.existOrFail(request, response, categoryVO);        
         request.setAttribute("category", categoryVO);
-        return request.getRequestDispatcher("views/admin/categories/update_category.jsp");
+        return rd;
     }
     
     protected RequestDispatcher doPostCategory(HttpServletRequest request, HttpServletResponse response, CategoryFacade facade){
-        CategoryVO categoryVO = facade.newCategory(this.getCategoryVO(request));
+        CategoryVO categoryVO = facade.newCategory(this.getNewCategoryVO(request));
         request.setAttribute("category", categoryVO);
+        request.setAttribute("message", "Categoría creada correcatemente");
         return request.getRequestDispatcher("views/admin/categories/view_category.jsp");
     }
     
@@ -107,17 +111,22 @@ public class CategoriesController extends HttpServlet {
         }
         request.setAttribute("message", message);
         
-        return request.getRequestDispatcher("page_message.jsp");
+        return request.getRequestDispatcher("views/admin/categories/lists_categories.jsp");
     }
     
-    protected RequestDispatcher doPutCategory(HttpServletRequest request, HttpServletResponse response, CategoryFacade facade) 
+    protected RequestDispatcher doPutCategory(HttpServletRequest request, HttpServletResponse response, CategoryFacade facade, Long id) 
             throws ServletException, IOException {
         
-        CategoryVO categoryVO = this.getCategoryVO(request);
+        CategoryVO categoryVO = this.getCategoryVO(request, id);
         categoryVO = facade.updateCategory(categoryVO);
-        this.existOrFail(request, response, categoryVO);
-        request.setAttribute("category", categoryVO);
+        RequestDispatcher rd = this.existOrFail(request, response, categoryVO);
         
+        if(rd != null) {
+            return rd;
+        }
+        
+        request.setAttribute("category", categoryVO);
+        request.setAttribute("message", "Categoría actualizada correcatemente");
         return request.getRequestDispatcher("views/admin/categories/view_category.jsp");
     }
     
@@ -136,14 +145,30 @@ public class CategoriesController extends HttpServlet {
         
         CategoryFacade facade = FacadeFactory.getCategoryFacade();
         String id = request.getParameter("category");
+        String option = request.getParameter("option");
         RequestDispatcher rd = null;
                 
-        if(id == null){
+        if(id == null && option == null){
             rd = doGetCategories(request, response, facade);
         }
-        else {
+        else if(Handler.isLong(id) && option != null && "edit".equals(option)){
             rd = doGetCategory(request, response, facade, new Long(id));
+            if(rd == null){
+                rd = request.getRequestDispatcher("views/admin/categories/edit_category.jsp");
+            }
+        }
+        else if(Handler.isLong(id)){
+            rd = doGetCategory(request, response, facade, new Long(id));
+            if(rd == null){
+                rd = request.getRequestDispatcher("views/admin/categories/view_category.jsp");
+            }
+        }
+        else if("create".equals(option)){
+            rd = doGetCreateCategory(request, response, facade);
         } 
+        else{
+            rd = Handler.doGetPageError(request, response, "La categoría no existe");
+        }
         
         rd.forward(request, response);
         
@@ -163,19 +188,21 @@ public class CategoriesController extends HttpServlet {
         
         RequestDispatcher rd = null;
         CategoryFacade facade = new CategoryFacade();
+        String method = request.getParameter("_method");
+        String id = request.getParameter("id");
         
-        int option = parseInt(request.getParameter("option"));
-        switch(option) {
-            case 1:   
-                rd = doPostCategory(request, response, facade);
-            break;                
-            case 2:
-                rd = doPutCategory(request, response, facade);  
-            break;                      
-            case 3:
-                rd = doDeleteCategory(request, response, facade, new Long(request.getParameter("id")));
-            break;                                 
-        }  
+        if(method == null || "POST".equals(method)){  
+            rd = doPostCategory(request, response, facade);
+        }
+        else if("PUT".equals(method) && Handler.isLong(id)) {             
+            rd = doPutCategory(request, response, facade, new Long(id));  
+        }
+        else if("DELETE".equals(method) && Handler.isLong(id)) {
+            rd = doDeleteCategory(request, response, facade, new Long(id));
+        }
+        else {
+            rd = Handler.doGetPageError(request, response, "La categoría no existe");
+        }
         
         rd.forward(request, response); 
         

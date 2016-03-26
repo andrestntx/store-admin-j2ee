@@ -5,6 +5,7 @@
  */
 package controller.admin;
 
+import controller.Handler;
 import facade.FacadeFactory;
 import facade.ProductFacade;
 import java.io.IOException;
@@ -67,18 +68,14 @@ public class ProductsController extends HttpServlet {
         return productVO;
     }
     
-    protected void doGetPageError(HttpServletRequest request, HttpServletResponse response, String message) throws ServletException, IOException{
-        request.setAttribute("message", message);
-        RequestDispatcher rd = request.getRequestDispatcher("erros/404.jsp");
-        rd.forward(request, response);
-    }
-    
-    protected void existOrFail(HttpServletRequest request, HttpServletResponse response, ProductVO productVO) 
+    protected RequestDispatcher existOrFail(HttpServletRequest request, HttpServletResponse response, ProductVO productVO) 
             throws ServletException, IOException {
         
         if(productVO == null) {
-            this.doGetPageError(request, response, "El producto que está buscando no existe");
+            return Handler.doGetPageError(request, response, "El producto que está buscando no existe");
         }
+        
+        return null;
     }
     
     protected RequestDispatcher doGetProducts(HttpServletRequest request, HttpServletResponse response, ProductFacade facade, Long categoryId) 
@@ -86,7 +83,7 @@ public class ProductsController extends HttpServlet {
         
         ProductVOW productVOW = facade.getProductsOfCategory(categoryId);
         if(productVOW == null){
-            this.doGetPageError(request, response, "La categoría no existe");
+            return Handler.doGetPageError(request, response, "La categoría no existe");
         }
         
         request.setAttribute("productVOW", productVOW);
@@ -97,7 +94,11 @@ public class ProductsController extends HttpServlet {
         throws ServletException, IOException {
         
         ProductVO productVO = facade.getProduct(id);
-        this.existOrFail(request, response, productVO);
+        RequestDispatcher rd = this.existOrFail(request, response, productVO);
+        if(rd != null) {
+            return rd;
+        }
+        
         request.setAttribute("product", productVO);
         return request.getRequestDispatcher("views/admin/products/update_product.jsp");
     }
@@ -115,7 +116,7 @@ public class ProductsController extends HttpServlet {
         }
         request.setAttribute("message", message);
         
-        return request.getRequestDispatcher("page_message.jsp");
+        return request.getRequestDispatcher("views/admin/products/lists_products.jsp");
     }
     
     protected RequestDispatcher doPutProduct(HttpServletRequest request, HttpServletResponse response, ProductFacade facade) 
@@ -123,9 +124,12 @@ public class ProductsController extends HttpServlet {
         
         ProductVO productVO = this.getProductVO(request);
         productVO = facade.updateProduct(productVO, new Long(request.getParameter("category_id")));
-        this.existOrFail(request, response, productVO);
-        request.setAttribute("product", productVO);
+        RequestDispatcher rd = this.existOrFail(request, response, productVO);
+        if(rd != null) {
+            return rd;
+        }
         
+        request.setAttribute("product", productVO);
         return request.getRequestDispatcher("views/admin/products/view_product.jsp");
     }
 
@@ -149,14 +153,14 @@ public class ProductsController extends HttpServlet {
         
         RequestDispatcher rd = null;
                 
-        if(categoryId != null){
+        if(Handler.isLong(categoryId)){
             rd = doGetProducts(request, response, facade, new Long(categoryId));
         }
-        else if(productId == null){
+        else if(Handler.isLong(productId)){
             rd = doGetProduct(request, response, facade, new Long(productId));
         } 
         else {
-            this.doGetPageError(request, response, "La categoría no existe");
+            rd = Handler.doGetPageError(request, response, "La categoría o el producto no existe");
         }
         
         rd.forward(request, response);
@@ -177,7 +181,8 @@ public class ProductsController extends HttpServlet {
         RequestDispatcher rd = null;
         ProductFacade facade = FacadeFactory.getProductFacade();
         
-        int option = parseInt(request.getParameter("option"));
+        try {
+            int option = parseInt(request.getParameter("option"));
         switch(option) {
             case 1:   
                 rd = doPostProduct(request, response, facade);
@@ -189,6 +194,9 @@ public class ProductsController extends HttpServlet {
                 rd = doDeleteProduct(request, response, facade, new Long(request.getParameter("id")));
             break;                                 
         }  
+        } catch (NumberFormatException e) {
+            rd = Handler.doGetPageError(request, response, "La categoría o el producto no existe");
+        }
         
         rd.forward(request, response); 
     }

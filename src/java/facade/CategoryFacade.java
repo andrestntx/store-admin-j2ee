@@ -25,16 +25,16 @@ public class CategoryFacade extends BaseFacade {
         CategoryService service = ServiceFactory.getCategoryService();
         List<CategoryVO> categories = new ArrayList<>();
         
-        try {
+       // try {
             trans.begin();
             categories = service.allCategories(em);
             trans.commit();
-        } catch (Exception e) {
+       /* } catch (Exception e) {
             trans.rollback();            
             System.err.println(e.getMessage());
         } finally {
             this.closeAndClearEntityManager(em);
-        }  
+        }  */
 
         return categories;
     }

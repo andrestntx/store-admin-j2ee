@@ -16,7 +16,7 @@ import javax.persistence.Persistence;
  */
 public class BaseFacade {
     
-    protected EntityManager getNewEntityManager(){
+    public EntityManager getNewEntityManager(){
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("storeAdminsPU");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         return entityManager;

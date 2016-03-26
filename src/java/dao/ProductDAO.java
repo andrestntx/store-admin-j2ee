@@ -15,6 +15,6 @@ import javax.persistence.EntityManager;
 public class ProductDAO extends BaseDAO<Product>{     
 
    public ProductDAO(EntityManager em) {
-        super(em);
+        super(em, Product.class);
     }
 }

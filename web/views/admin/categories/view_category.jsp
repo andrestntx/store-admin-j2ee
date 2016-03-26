@@ -4,6 +4,7 @@
     Author     : Felipe Iz
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -15,14 +16,18 @@
     </head>
     <body>
         <div class="col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8">
-            <h1 class="title-page">Categoría Guardada</h1>
-
+            <h1 class="title-page">Categoría</h1>
+            
+            <c:if test="${message != null}" var="exsits_message" scope="request">
+                <p class="alert alert-info">${requestScope.message}</p>
+            </c:if>
+            
             <dl class="dl-horizontal">
                 <dt>Nombre:</dt> <dd>${requestScope.category.name}</dd>                              
+                <dt>Descripción</dt> <dd>${requestScope.category.description}</dd>                              
             </dl>
-            <a class="btn btn-info" href="/storeAdmins/admin/catagories?category=${requestScope.category.id}">Editar Categoría</a>
-            <a class="btn btn-info" href="/storeAdmins/admin/catagories">Ver Categoría</a>
-            
+            <a class="btn btn-success" href="/storeAdmins/admin-categories">Categorías</a>
+            <a class="btn btn-warning" href="/storeAdmins/admin-categories?category=${requestScope.category.id}&option=edit">Editar</a>
         </div>
     </body>
 </html>

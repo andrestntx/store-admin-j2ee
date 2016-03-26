@@ -31,11 +31,6 @@ import vow.ProductVOW;
 @WebServlet(name = "CategoriesController", urlPatterns = {"/categories"})
 public class CategoriesController extends HttpServlet {
     
-    protected void doGetPageError(HttpServletRequest request, HttpServletResponse response, String message) throws ServletException, IOException{
-        request.setAttribute("message", message);
-        RequestDispatcher rd = request.getRequestDispatcher("erros/404.jsp");
-        rd.forward(request, response);
-    }
     
     protected RequestDispatcher doGetCategories(HttpServletRequest request, HttpServletResponse response, CategoryFacade facade) 
         throws ServletException, IOException {
@@ -51,7 +46,7 @@ public class CategoriesController extends HttpServlet {
                 
         ProductVOW productVOW = facade.getProductsOfCategory(categoryId);
         if(productVOW == null){
-            this.doGetPageError(request, response, "La categoría no existe");
+            return Handler.doGetPageError(request, response, "La categoría no existe");
         }
         
         request.setAttribute("productVOW", productVOW);

@@ -6,6 +6,7 @@ package controller.admin;
  * and open the template in the editor.
  */
 
+import controller.Handler;
 import facade.FacadeFactory;
 import facade.UserFacade;
 import java.io.IOException;
@@ -69,18 +70,14 @@ public class UsersController extends HttpServlet {
         return userVO;
     }
     
-    protected void doGetPageError(HttpServletRequest request, HttpServletResponse response, String message) throws ServletException, IOException{
-        request.setAttribute("message", message);
-        RequestDispatcher rd = request.getRequestDispatcher("erros/404.jsp");
-        rd.forward(request, response);
-    }
-    
-    protected void existOrFail(HttpServletRequest request, HttpServletResponse response, UserVO userVO) 
+    protected RequestDispatcher existOrFail(HttpServletRequest request, HttpServletResponse response, UserVO userVO) 
             throws ServletException, IOException {
         
         if(userVO == null) {
-            this.doGetPageError(request, response, "El usuario que está buscando no existe");
+            return Handler.doGetPageError(request, response, "El usuario que está buscando no existe");
         }
+        
+        return null;
     }
     
     protected RequestDispatcher doGetUsers(HttpServletRequest request, HttpServletResponse response, UserFacade facade) 
@@ -95,7 +92,10 @@ public class UsersController extends HttpServlet {
         throws ServletException, IOException {
 
         UserVO userVO = facade.getUser(id);
-        this.existOrFail(request, response, userVO);
+        RequestDispatcher rd = this.existOrFail(request, response, userVO);
+        if(rd != null) {
+            return rd;
+        }
         request.setAttribute("user", userVO);
         return request.getRequestDispatcher("views/admin/users/update_user.jsp");
     }
@@ -117,12 +117,15 @@ public class UsersController extends HttpServlet {
         String id = request.getParameter("user");
         RequestDispatcher rd = null;
                 
-        if(id.isEmpty()){
+        if(id == null){
             rd = doGetUsers(request, response, facade);
         }
-        else {
+        else if(Handler.isLong(id)){
             rd = doGetUser(request, response, facade, new Long(id));
         } 
+        else {
+            rd = Handler.doGetPageError(request, response, "El usuario no existe"); 
+        }
         
         rd.forward(request, response);
     }
@@ -130,7 +133,7 @@ public class UsersController extends HttpServlet {
     protected RequestDispatcher doPostUser(HttpServletRequest request, HttpServletResponse response, UserFacade facade){
         UserVO userVO = facade.newUser(this.getNewUserVO(request));
         request.setAttribute("user", userVO);
-        return request.getRequestDispatcher("users/view_user.jsp");
+        return request.getRequestDispatcher("views/admin/users/view_user.jsp");
     }
     
     protected RequestDispatcher doDeleteUser(HttpServletRequest request, HttpServletResponse response, UserFacade facade, Long id){
@@ -139,7 +142,7 @@ public class UsersController extends HttpServlet {
             message = "Usuario eliminado correctamente";
         }
         request.setAttribute("message", message);
-        return request.getRequestDispatcher("page_message.jsp");
+        return request.getRequestDispatcher("views/admin/users/lists_users.jsp");
     }
     
     protected RequestDispatcher doPutUser(HttpServletRequest request, HttpServletResponse response, UserFacade facade) 
@@ -150,7 +153,7 @@ public class UsersController extends HttpServlet {
         this.existOrFail(request, response, userVO);
         
         request.setAttribute("user", userVO);
-        return request.getRequestDispatcher("users/view_user.jsp");
+        return request.getRequestDispatcher("views/admin/users/view_user.jsp");
     }
     
     /**
@@ -168,19 +171,25 @@ public class UsersController extends HttpServlet {
         RequestDispatcher rd = null;
         UserFacade facade = FacadeFactory.getUserFacade();
         
-        int option = parseInt(request.getParameter("option"));
-        switch(option) {
-            case 1:   
-                rd = doPostUser(request, response, facade);
-            break;                
-            case 2:
-                rd = doPutUser(request, response, facade);  
-            break;                      
-            case 3:
-                rd = doDeleteUser(request, response, facade, new Long(request.getParameter("id")));
-            break;                                 
-        }  
-        
+        try {
+            int option = parseInt(request.getParameter("option"));
+            switch(option) {
+                case 1:   
+                    rd = doPostUser(request, response, facade);
+                break;                
+                case 2:
+                    rd = doPutUser(request, response, facade);  
+                break;                      
+                case 3:
+                    rd = doDeleteUser(request, response, facade, new Long(request.getParameter("id")));
+                default:
+                    rd = Handler.doGetPageError(request, response, "Opción invalida"); 
+                break;                                 
+            } 
+        } catch (NumberFormatException e) {
+            rd = Handler.doGetPageError(request, response, "El usuario que está buscando no existe"); 
+        }
+         
         rd.forward(request, response); 
     }
     

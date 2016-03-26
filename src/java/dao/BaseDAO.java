@@ -5,6 +5,7 @@
  */
 package dao;
 
+import entity.Category;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -17,12 +18,25 @@ import javax.persistence.Query;
 public class BaseDAO <T> {
     
     protected EntityManager em;
-    protected Class<T> type;
-
-    public BaseDAO(EntityManager em) {
+    private final Class<T> type;
+    
+    public BaseDAO(EntityManager em, Class<T> type) {
         this.em = em;
+        this.type = type;
     }
     
+    public EntityManager getEm() {
+        return em;
+    }
+
+    public void setEm(EntityManager em) {
+        this.em = em;
+    }
+
+    public Class<T> getType() {
+        return type;
+    }
+
     public void save(T entity) {
         this.em.persist(entity);
     }
@@ -54,7 +68,9 @@ public class BaseDAO <T> {
     }
     
     public List<T> getAll(int maxResults) {
-        Query jpql = this.em.createQuery("select u from " + this.type.getSimpleName() + " u").setMaxResults(maxResults);  
+        Query jpql = this.em.createQuery("select s from Category s").setMaxResults(maxResults);  
+        List<T> resultados = (List<T>)jpql.getResultList();
+//Query jpql = this.em.createQuery("select s from " + this.type.getSimpleName() + " s").setMaxResults(maxResults);  
         return (List<T>)jpql.getResultList();
     }
     

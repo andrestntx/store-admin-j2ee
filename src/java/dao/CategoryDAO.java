@@ -13,9 +13,11 @@ import javax.persistence.EntityManager;
  * @author andrestntx
  */
 public class CategoryDAO extends BaseDAO<Category>{
-    
+
     public CategoryDAO(EntityManager em) {
-        super(em);
+        super(em, Category.class);
     }
+    
+    
     
 }

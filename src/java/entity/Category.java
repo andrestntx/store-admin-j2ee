@@ -25,6 +25,7 @@ public class Category extends BaseEntity implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String description;
     
     @OneToMany (cascade=CascadeType.ALL)
     private List<Product> products;
@@ -49,6 +50,16 @@ public class Category extends BaseEntity implements Serializable{
         return products;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
+    
+
     public void setProducts(List<Product> products) {
         this.products = products;
     }
@@ -59,6 +70,7 @@ public class Category extends BaseEntity implements Serializable{
         CategoryVO vo = new CategoryVO();
         vo.setId(this.getId());
         vo.setName(this.getName());
+        vo.setDescription(this.getDescription());
         
         /*if(this.getProducts() != null){
             List<ProductVO> productsVO = new ArrayList<>();

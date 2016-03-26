@@ -16,17 +16,30 @@
     </head>
     <body>
         <div class="col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8">
-            <h1 class="title-page">Listado de Categorías</h1>
+            <h1 class="title-page">Listado de Categorías 
+                <a href="/storeAdmins/admin-categories?option=create" class="btn btn-primary">
+                    <i class="fa fa-plus"></i> Nueva
+                </a>
+            </h1>
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>Nombre</th>                        
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Opción</th>
                     </tr>
                 </thead>
-                <c:forEach var="$category" items="${categories}"> 
+                <c:forEach var="category" items="${categories}"> 
                     <tbody>
                         <tr>
-                            <td>${category.getName()}</td>                             
+                            <td>${category.id}</td>     
+                            <td>${category.name}</td>
+                            <td>${category.description}</td>
+                            <td>
+                                <a class="btn btn-info" href="/storeAdmins/admin-categories?category=${category.id}">Ver</a>
+                                <a class="btn btn-warning" href="/storeAdmins/admin-categories?category=${category.id}&option=edit">Editar</a>
+                            </td>
                         </tr>
                     </tbody>
                  </c:forEach>
