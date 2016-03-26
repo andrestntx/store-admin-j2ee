@@ -22,7 +22,7 @@ import vo.UserVO;
  *
  * @author Felipe Iz
  */
-@WebFilter(filterName = "MyFilter", urlPatterns = {"/views/admin/*"})
+@WebFilter(filterName = "MyFilter", urlPatterns = {"/*"})
 public class MyFilter implements Filter {
 
     private static final boolean debug = true;
@@ -55,7 +55,7 @@ public class MyFilter implements Filter {
         
         HttpSession session = req.getSession();
         HttpSession session2 = req.getSession(false);
-        if (session2 == null && !(uri.endsWith(".html") || uri.endsWith("/AuthController"))) {
+        if (session2 == null && !(uri.endsWith(".html") )) {
             res.sendRedirect("/storeAdmins/views/loguin.jsp");
         }
         if (uri.endsWith(".html") || uri.endsWith("/Login") || uri.endsWith(".css") || uri.endsWith(".js")
@@ -64,12 +64,16 @@ public class MyFilter implements Filter {
                 || uri.endsWith(".gif")) {
             chain.doFilter(request, response);
         } else {
-            UserVO user = (UserVO) session.getAttribute("usuario");
-            if (user != null) {
-                System.out.println(user.getName());
-                chain.doFilter(request, response);
+            if(uri.contains("admin")){
+                UserVO user = (UserVO) session.getAttribute("usuario");
+                if (user != null) {
+                    System.out.println(user.getName());
+                    chain.doFilter(request, response);
+                }else{
+                    res.sendRedirect("/storeAdmins/views/loguin.jsp");
+                }  
             }else{
-                res.sendRedirect("/storeAdmins/views/loguin.jsp");
+                chain.doFilter(request, response);
             }
         }
     }
