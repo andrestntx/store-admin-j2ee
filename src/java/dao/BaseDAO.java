@@ -68,7 +68,7 @@ public class BaseDAO <T> {
     }
     
     public List<T> getAll(int maxResults) {
-        Query jpql = this.em.createQuery("select s from Category s").setMaxResults(maxResults);  
+        Query jpql = this.em.createQuery("select s from " + this.type.getSimpleName() + " s").setMaxResults(maxResults);  
         List<T> resultados = (List<T>)jpql.getResultList();
 //Query jpql = this.em.createQuery("select s from " + this.type.getSimpleName() + " s").setMaxResults(maxResults);  
         return (List<T>)jpql.getResultList();
