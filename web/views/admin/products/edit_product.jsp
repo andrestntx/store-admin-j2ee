@@ -38,7 +38,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Datos del Producto</h1>
+                    <h1 class="page-header">Categoría ${product.categoryVO.name} - Editar Producto</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -54,25 +54,16 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">Precio</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="text" name="price" value="${requestScope.product.username}"/>
+                        <input class="form-control" type="text" name="price" value="${requestScope.product.price}"/>
                     </div>
                 </div>                
                 <div class="form-group">
                     <label class="col-sm-2 control-label">Descripción</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="textarea" name="description" value="${requestScope.product.email}"/>
+                        <input class="form-control" type="textarea" name="description" value="${requestScope.product.description}"/>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Categoría</label>
-                    <div class="col-sm-10">
-                        <select name="category_id">
-                            <c:forEach var="category" items="${categories}"> 
-                                <option <c:if test="${product.categoryId} == ${category.id}"> selected </c:if>  value="${category.id}">${category.name}</option>
-                            </c:forEach>                    
-                        </select>
-                    </div>
-                </div>              
+                
                 <input type="hidden" name="created_by" value="1">
                 <input type="hidden" name="option" value="3">
                 <input type="submit" class="btn btn-info col-sm-offset-2" value="Guardar"/>

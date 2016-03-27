@@ -24,7 +24,7 @@ public class Product extends BaseEntity implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @OneToOne (cascade=CascadeType.ALL)
+    @OneToOne (cascade=CascadeType.PERSIST)
     private Category category;
     
     private int created_by;
@@ -91,6 +91,4 @@ public class Product extends BaseEntity implements Serializable{
     public void setCategory(Category category) {
         this.category = category;
     }
-    
-
 }

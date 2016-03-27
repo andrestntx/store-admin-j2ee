@@ -38,46 +38,51 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Producto</h1>
+                    <h1 class="page-header">Nuevo Producto</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
             <div class="row">
                 
-                <form method="POST" action="/storeAdmins/admin/products" class="form-horizontal">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Nombre</label>
-                    <div class="col-sm-10">
-                        <input class="form-control" type="text" name="name" value=""/>
+                <form method="POST" action="/storeAdmins/admin-products" class="form-horizontal">
+                    
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Nombre</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="text" name="name" value=""/>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Precio</label>
-                    <div class="col-sm-10">
-                        <input class="form-control" type="text" name="price" value=""/>
-                    </div>
-                </div>                
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Descripción</label>
-                    <div class="col-sm-10">
-                        <input class="form-control" type="textarea" name="description" value=""/>
-                    </div>
-                </div> 
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Categoría</label>
-                    <div class="col-sm-10">
-                        <select name="category_id">
-                            <c:forEach var="category" items="${categories}"> 
-                                <option value="${category.id}">${category.name}</option>
-                            </c:forEach>                    
-                        </select>
-                    </div>
-                </div>                 
-                <input type="hidden" name="created_by" value="1">
-                <input type="hidden" name="option" value="1">
-                <input type="submit" class="btn btn-info col-sm-offset-2" value="Guardar"/>                
-            </form>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Precio</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="text" name="price" value=""/>
+                        </div>
+                    </div>                
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Descripción</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="textarea" name="description" value=""/>
+                        </div>
+                    </div>   
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Categoría</label>
+                        <div class="col-sm-8">
+                            <select name="category_id" class="form-control">
+                                <c:forEach var="cat" items="${requestScope.productVOW.categoriesVO}"> 
+                                    <option value="${cat.id}" 
+                                        <c:if test="${cat.id == productVOW.categoryVO.id}">
+                                            selected 
+                                        </c:if>>
+                                        ${cat.name}
+                                    </option>
+                                </c:forEach>                    
+                            </select>
+                        </div>
+                    </div> 
+                    <input type="hidden" name="created_by" value="1">
+                    <input type="submit" class="btn btn-info col-sm-offset-2" value="Guardar"/>                
+                </form>
                                              
             </div>
         </div>
