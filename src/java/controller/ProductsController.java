@@ -9,6 +9,7 @@ import facade.FacadeFactory;
 import facade.ProductFacade;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,6 +24,29 @@ import vo.ProductVO;
  */
 @WebServlet(name = "ProductsController", urlPatterns = {"/products"})
 public class ProductsController extends HttpServlet {
+    
+    protected RequestDispatcher doGetProducts(HttpServletRequest request, HttpServletResponse response, CategoryFacade facade) 
+        throws ServletException, IOException {
+        
+        List<ProductVO> products = facade.allProducts();
+        request.setAttribute("products", products);
+        RequestDispatcher rd = request.getRequestDispatcher("views/guest/products.jsp");
+        return rd; 
+    }
+    
+    protected RequestDispatcher doGetProductById(HttpServletRequest request, HttpServletResponse response, ProductFacade facade, Long productId)
+        throws ServletException, IOException {
+                
+        ProductVO product = facade.getProduct(productId);
+        if(product == null){
+            return Handler.doGetPageError(request, response, "El producto no existe");
+        }
+        
+        request.setAttribute("product", product);
+                RequestDispatcher rd = request.getRequestDispatcher("views/guest/product.jsp");
+        
+        return rd;
+    }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -63,12 +87,17 @@ public class ProductsController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        Long productId = new Long(request.getParameter("product"));
+        String productId = request.getParameter("product");
+        RequestDispatcher rd = null;
         ProductFacade facade = FacadeFactory.getProductFacade();
-        ProductVO product = facade.getProduct(productId);
         
-        request.setAttribute("product", product);
-        RequestDispatcher rd = request.getRequestDispatcher("public/product.jsp");
+        
+        if(productId == null) {
+            rd = this.doGetProducts(request, response, facade);
+        }
+        else {
+            rd = this.doGetProductById(request, response, FacadeFactory.getProductFacade(), new Long(productId));
+        } 
         rd.forward(request, response);
     }
 
