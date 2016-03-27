@@ -22,7 +22,22 @@ import vo.ProductVO;
  * @author andrestntx
  */
 @WebServlet(name = "ProductsController", urlPatterns = {"/products"})
-public class ProductsController extends HttpServlet {
+public class ProductsController extends HttpServlet {    
+    
+    
+    protected RequestDispatcher doGetProductById(HttpServletRequest request, HttpServletResponse response, ProductFacade facade, Long productId)
+        throws ServletException, IOException {
+                
+        ProductVO product = facade.getProduct(productId);
+        if(product == null){
+            return Handler.doGetPageError(request, response, "El producto no existe");
+        }
+        
+        request.setAttribute("product", product);
+                RequestDispatcher rd = request.getRequestDispatcher("views/guest/product.jsp");
+        
+        return rd;
+    }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -63,13 +78,17 @@ public class ProductsController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        Long productId = new Long(request.getParameter("product"));
-        ProductFacade facade = FacadeFactory.getProductFacade();
-        ProductVO product = facade.getProduct(productId);
+        String productId = request.getParameter("product");
         
-        request.setAttribute("product", product);
-        RequestDispatcher rd = request.getRequestDispatcher("public/product.jsp");
-        rd.forward(request, response);
+        if(productId == null) {
+            HttpServletResponse res = (HttpServletResponse) response;
+            res.sendRedirect("/storeAdmins/categories");
+        }
+        else {
+            RequestDispatcher rd = this.doGetProductById(request, response, FacadeFactory.getProductFacade(), new Long(productId));
+            rd.forward(request, response);
+        } 
+        
     }
 
     /**

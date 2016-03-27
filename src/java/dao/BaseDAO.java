@@ -74,6 +74,7 @@ public class BaseDAO <T> {
     }
     
     public List<T> getByAttribute(String attribute, String value){
+
         Query jpql = this.em.createQuery("select s from " + this.type.getSimpleName() + " s where s." + attribute + " = :value");
         jpql.setParameter("value", value);
         
@@ -82,7 +83,7 @@ public class BaseDAO <T> {
     
     public List<T> getByAttribute(String attribute, BaseEntity value){
         Query jpql = this.em.createQuery("select s from " + this.type.getSimpleName() + " s where s." + attribute + " = :value");
-        jpql.setParameter("value", value);
+        jpql.setParameter("value", value);  
         
         return (List<T>)jpql.getResultList();
     }
