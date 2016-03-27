@@ -66,7 +66,8 @@
                                 <td>${category.description}</td>
                                 <td>
                                     <a class="btn btn-info" href="/storeAdmins/admin-categories?category=${category.id}">Ver</a>
-                                    <a class="btn btn-warning" href="/storeAdmins/admin-categories?category=${category.id}&option=edit">Editar</a>
+                                    <a class="btn btn-success" href="/storeAdmins/admin-categories?category=${category.id}&option=edit">Editar</a>
+                                    <a class="btn btn-warning" href="/storeAdmins/admin-products?category=${category.id}">Productos</a>
                                 </td>
                             </tr>
                         </tbody>

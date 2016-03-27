@@ -5,6 +5,7 @@
  */
 package dao;
 
+import entity.BaseEntity;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -69,21 +70,26 @@ public class BaseDAO <T> {
     public List<T> getAll(int maxResults) {
         Query jpql = this.em.createQuery("select s from " + this.type.getSimpleName() + " s").setMaxResults(maxResults);  
         List<T> resultados = (List<T>)jpql.getResultList();
-//Query jpql = this.em.createQuery("select s from " + this.type.getSimpleName() + " s").setMaxResults(maxResults);  
         return (List<T>)jpql.getResultList();
     }
     
     public List<T> getByAttribute(String attribute, String value){
-        System.out.println("atribute " + attribute +" value " + value);
-        Query jpql = this.em.createQuery("select s from " + this.type.getSimpleName() + " s where s.:attribute = :value");
-        jpql.setParameter("attribute", attribute);
+
+        Query jpql = this.em.createQuery("select s from " + this.type.getSimpleName() + " s where s." + attribute + " = :value");
         jpql.setParameter("value", value);
         
         return (List<T>)jpql.getResultList();
     }
     
+    public List<T> getByAttribute(String attribute, BaseEntity value){
+        Query jpql = this.em.createQuery("select s from " + this.type.getSimpleName() + " s where s." + attribute + " = :value");
+        jpql.setParameter("value", value);  
+        
+        return (List<T>)jpql.getResultList();
+    }
+    
     public List<T> getLikeByAttribute(String attribute, String value){
-        Query jpql = this.em.createQuery("select s from " + this.type.getSimpleName() + " s where s.:attribute.id LIKE % :value %");
+        Query jpql = this.em.createQuery("select s from " + this.type.getSimpleName() + " s where s." + attribute + " LIKE % :value %");
         jpql.setParameter("attribute", attribute);
         jpql.setParameter("value", value);
         

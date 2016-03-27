@@ -22,7 +22,7 @@ import service.CategoryService;
 import service.ProductService;
 import vo.CategoryVO;
 import vo.ProductVO;
-import vow.ProductVOW;
+import vow.CategoryVOW;
 
 /**
  *
@@ -44,7 +44,7 @@ public class CategoriesController extends HttpServlet {
     protected RequestDispatcher doGetCategoryProducts(HttpServletRequest request, HttpServletResponse response, ProductFacade facade, Long categoryId)
         throws ServletException, IOException {
                 
-        ProductVOW productVOW = facade.getProductsOfCategory(categoryId);
+        CategoryVOW productVOW = facade.getProductsOfCategory(categoryId);
         if(productVOW == null){
             return Handler.doGetPageError(request, response, "La categoría no existe");
         }

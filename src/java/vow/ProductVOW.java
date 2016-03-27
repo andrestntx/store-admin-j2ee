@@ -14,12 +14,35 @@ import vo.ProductVO;
  * @author andrestntx
  */
 public class ProductVOW {
+    private ProductVO productVO;
     private CategoryVO categoryVO;
-    private List<ProductVO> productsVO;
+    private List<CategoryVO> categoriesVO;
 
-    public ProductVOW(CategoryVO categoryVO, List<ProductVO> productsVO) {
+    public ProductVOW(ProductVO productVO, CategoryVO categoryVO, List<CategoryVO> categoriesVO) {
+        this.productVO = productVO;
+        this.categoriesVO = categoriesVO;
         this.categoryVO = categoryVO;
-        this.productsVO = productsVO;
+    }
+
+    public ProductVOW(CategoryVO categoryVO, List<CategoryVO> categoriesVO) {
+        this.categoryVO = categoryVO;
+        this.categoriesVO = categoriesVO;
+    }
+
+    public ProductVO getProductVO() {
+        return productVO;
+    }
+
+    public void setProductVO(ProductVO productVO) {
+        this.productVO = productVO;
+    }
+
+    public List<CategoryVO> getCategoriesVO() {
+        return categoriesVO;
+    }
+
+    public void setCategoriesVO(List<CategoryVO> categoriesVO) {
+        this.categoriesVO = categoriesVO;
     }
 
     public CategoryVO getCategoryVO() {
@@ -29,14 +52,5 @@ public class ProductVOW {
     public void setCategoryVO(CategoryVO categoryVO) {
         this.categoryVO = categoryVO;
     }
-
-    public List<ProductVO> getProductsVO() {
-        return productsVO;
-    }
-
-    public void setProductsVO(List<ProductVO> productsVO) {
-        this.productsVO = productsVO;
-    }
-    
     
 }

@@ -14,6 +14,7 @@ import service.ProductService;
 import service.ServiceFactory;
 import vo.CategoryVO;
 import vo.ProductVO;
+import vow.CategoryVOW;
 import vow.ProductVOW;
 
 /**
@@ -22,30 +23,29 @@ import vow.ProductVOW;
  */
 public class ProductFacade extends BaseFacade {
     
-    public ProductVOW getProductsOfCategory(Long categoryId){
+    public CategoryVOW getProductsOfCategory(Long categoryId){
         EntityManager em = this.getNewEntityManager();
         EntityTransaction trans = this.getEntityTransaction(em);
         
         CategoryService categoryService = ServiceFactory.getCategoryService();
         ProductService productService = ServiceFactory.getProductService();
         List<ProductVO> products = new ArrayList<>();
-        ProductVOW productVOW = null;
+        CategoryVOW productVOW = null;
         
-        try {
+        //try {
             trans.begin();
             CategoryVO category = categoryService.getCategory(categoryId, em);
             if(category != null){
-                System.out.println("entro aca");
-                products = productService.getProductsOfCategory(categoryId, em);
-                productVOW = new ProductVOW(category, products);
+                products = productService.getProductsOfCategory(category, em);
+                productVOW = new CategoryVOW(category, products);
             }
             trans.commit();
-        } catch (Exception e) {
+        /*} catch (Exception e) {
             trans.rollback();            
             System.err.println(e.getMessage());
         } finally {
             this.closeAndClearEntityManager(em);
-        }
+        }*/
 
         return productVOW;
     }
@@ -112,6 +112,57 @@ public class ProductFacade extends BaseFacade {
         }  
 
         return productVO;
+    }
+    
+    public ProductVOW getProductForm(Long categoryId, Long productId) {
+        EntityManager em = this.getNewEntityManager();
+        EntityTransaction trans = this.getEntityTransaction(em);
+        
+        ProductService service = ServiceFactory.getProductService();
+        CategoryService serviceCategory = ServiceFactory.getCategoryService();
+        
+        ProductVOW productVOW = null;
+        
+        try {
+            trans.begin();
+            ProductVO productVO  = service.getProduct(productId, em);
+            List<CategoryVO> categoriesVO = serviceCategory.allCategories(em);
+            CategoryVO categoryVO = serviceCategory.getCategory(categoryId, em);
+            productVOW = new ProductVOW(productVO, categoryVO, categoriesVO);
+            trans.commit();
+        } catch (Exception e) {
+            trans.rollback();            
+            System.err.println(e.getMessage());
+        } finally {
+            this.closeAndClearEntityManager(em);
+        }  
+
+        return productVOW;
+    }
+    
+    public ProductVOW getProductForm(Long categoryId) {
+        EntityManager em = this.getNewEntityManager();
+        EntityTransaction trans = this.getEntityTransaction(em);
+        
+        ProductService service = ServiceFactory.getProductService();
+        CategoryService serviceCategory = ServiceFactory.getCategoryService();
+        
+        ProductVOW productVOW = null;
+        
+        try {
+            trans.begin();
+            List<CategoryVO> categoriesVO = serviceCategory.allCategories(em);
+            CategoryVO categoryVO = serviceCategory.getCategory(categoryId, em);
+            productVOW = new ProductVOW(categoryVO, categoriesVO);
+            trans.commit();
+        } catch (Exception e) {
+            trans.rollback();            
+            System.err.println(e.getMessage());
+        } finally {
+            this.closeAndClearEntityManager(em);
+        }  
+
+        return productVOW;
     }
 
     public boolean deleteProduct(Long id) {

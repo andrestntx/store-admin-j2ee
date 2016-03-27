@@ -7,6 +7,7 @@ package service;
 
 import dao.DAOFactory;
 import dao.ProductDAO;
+import entity.Category;
 import entity.Product;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,9 +48,10 @@ public class ProductService {
         return this.toVO(productDAO.getAll());               
     }
 
-    public List<ProductVO> getProductsOfCategory(Long categoryId, EntityManager em) {
+    public List<ProductVO> getProductsOfCategory(CategoryVO categoryVO, EntityManager em) {
         ProductDAO productDAO = DAOFactory.getProductDAO(em);
-        return this.toVO(productDAO.getByAttribute("CATEGORY_ID", categoryId.toString()));
+        List<ProductVO> products = this.toVO(productDAO.getByAttribute("category", categoryVO.toEntity()));
+        return products;
     }
 
     public ProductVO getProduct(Long productId, EntityManager em) {

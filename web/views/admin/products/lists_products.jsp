@@ -38,7 +38,11 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Listado de Productos</h1>
+                    <h1 class="page-header">
+                        Categoría ${categoryVOW.categoryVO.name} - Productos 
+                        <a href="/storeAdmins/admin-products?option=create&category=${categoryVOW.categoryVO.id}" class="btn btn-info"> 
+                            <i class="fa fa-plus"></i> Nuevo</a>
+                    </h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -54,7 +58,7 @@
                             <th>Opción</th>
                         </tr>
                     </thead>
-                    <c:forEach var="product" items="${products}"> 
+                    <c:forEach var="product" items="${categoryVOW.productsVO}"> 
                         <tbody>
                             <tr>
                                 <td>${product.name}</td>
@@ -62,7 +66,7 @@
                                 <td>${product.description}</td> 
                                 <td>
                                     <a class="btn btn-info" href="/storeAdmins/admin-products?product=${product.id}">Ver</a>
-                                    <a class="btn btn-warning" href="/storeAdmins/admin-products?product=${product.id}&option=edit">Editar</a>
+                                    <a class="btn btn-warning" href="/storeAdmins/admin-products?category=${product.categoryVO.id}&product=${product.id}&option=edit">Editar</a>
                                 </td>
                             </tr>
                         </tbody>

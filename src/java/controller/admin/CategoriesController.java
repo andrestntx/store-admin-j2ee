@@ -185,18 +185,64 @@ public class CategoriesController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        String method = request.getParameter("_method");
+        
+        if(null != method)switch (method) {
+            case "PUT":
+                this.doPut(request, response);
+                break;
+            case "DELETE":
+                this.doDelete(request, response);
+                break;
+        }
+        else {
+            CategoryFacade facade = new CategoryFacade();
+            RequestDispatcher rd = doPostCategory(request, response, facade); 
+            rd.forward(request, response);
+        }
+    }
+    
+    /**
+     * Handles the HTTP <code>PUT</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        RequestDispatcher rd = null;
+        CategoryFacade facade = new CategoryFacade();
+        
+        String id = request.getParameter("id");
+        
+        if(Handler.isLong(id)) {             
+            rd = doPutCategory(request, response, facade, new Long(id));  
+        }
+        else {
+            rd = Handler.doGetPageError(request, response, "La categoría no existe");
+        }
+        
+        rd.forward(request, response); 
+    }
+    
+    /**
+     * Handles the HTTP <code>DELETE</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher rd = null;
         CategoryFacade facade = new CategoryFacade();
         String method = request.getParameter("_method");
         String id = request.getParameter("id");
         
-        if(method == null || "POST".equals(method)){  
-            rd = doPostCategory(request, response, facade);
-        }
-        else if("PUT".equals(method) && Handler.isLong(id)) {             
-            rd = doPutCategory(request, response, facade, new Long(id));  
-        }
-        else if("DELETE".equals(method) && Handler.isLong(id)) {
+        if(Handler.isLong(id)) {
             rd = doDeleteCategory(request, response, facade, new Long(id));
         }
         else {
@@ -204,9 +250,9 @@ public class CategoriesController extends HttpServlet {
         }
         
         rd.forward(request, response); 
-        
     }
-
+    
+    
     /**
      * Returns a short description of the servlet.
      *

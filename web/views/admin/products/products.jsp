@@ -72,7 +72,7 @@
                                 </div>                                
                             </div>
                         </div>
-                        <a href="/storeAdmins/views/admin-products">
+                        <a href="/storeAdmins/admin-categories">
                             <div class="panel-footer">
                                 <span class="pull-left">Ver Detalles</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
