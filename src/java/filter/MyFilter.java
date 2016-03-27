@@ -51,7 +51,7 @@ public class MyFilter implements Filter {
 
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-        /*String uri = req.getRequestURI();
+        String uri = req.getRequestURI();
         
         HttpSession session = req.getSession();
         HttpSession session2 = req.getSession(false);
@@ -75,8 +75,7 @@ public class MyFilter implements Filter {
             }else{
                 chain.doFilter(request, response);
             }
-        }*/
-        chain.doFilter(request, response);
+        }        
     }
 
     /**
