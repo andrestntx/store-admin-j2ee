@@ -39,6 +39,7 @@
                     <div class="col-lg-12">
                         <h1 class="page-header">Categoría
                             <a class="btn btn-success" href="/storeAdmins/admin-categories">Todas</a>
+                            <a class="btn btn-info" href="/storeAdmins/admin-products?category=${requestScope.category.id}">Productos</a>
                             <a class="btn btn-warning" href="/storeAdmins/admin-categories?category=${requestScope.category.id}&option=edit">
                                 <i class="fa fa-pencil"></i> Editar
                             </a>
@@ -48,9 +49,9 @@
                 </div>
                 <!-- /.row -->
                 <div class="row">                
-                   <c:if test="${message != null}" var="exsits_message" scope="request">
-                    <p class="alert alert-info">${requestScope.message}</p>
-                </c:if>
+                    <c:if test="${message != null}" var="exsits_message" scope="request">
+                        <p class="alert alert-info">${requestScope.message}</p>
+                    </c:if>
 
                 <dl class="dl-horizontal">
                     <dt>Nombre:</dt> <dd>${requestScope.category.name}</dd>                              

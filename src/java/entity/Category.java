@@ -57,8 +57,6 @@ public class Category extends BaseEntity implements Serializable{
     public void setDescription(String description) {
         this.description = description;
     }
-    
-    
 
     public void setProducts(List<Product> products) {
         this.products = products;

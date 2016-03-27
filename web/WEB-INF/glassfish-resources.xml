@@ -52,4 +52,5 @@
         <property name="driverClass" value="org.apache.derby.jdbc.ClientDriver"/>
     </jdbc-connection-pool>
     <jdbc-resource enabled="true" jndi-name="java:app/proyecto" object-type="user" pool-name="derby_net_proyecto_andresPool"/>
+    <jdbc-resource enabled="true" jndi-name="java:app/storeNUEVOFINAL" object-type="user" pool-name="derby_net_proyecto_andresPool"/>
 </resources>

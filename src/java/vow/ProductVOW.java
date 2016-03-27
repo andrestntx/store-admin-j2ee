@@ -29,6 +29,11 @@ public class ProductVOW {
         this.categoriesVO = categoriesVO;
     }
 
+    public ProductVOW(ProductVO productVO, List<CategoryVO> categoriesVO) {
+        this.productVO = productVO;
+        this.categoriesVO = categoriesVO;
+    }
+
     public ProductVO getProductVO() {
         return productVO;
     }

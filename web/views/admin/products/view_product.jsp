@@ -39,7 +39,7 @@
                 <div class="col-lg-12">
                     <h1 class="page-header">Producto
                         <a class="btn btn-success" href="/storeAdmins/admin-products?category=${requestScope.product.categoryVO.id}">Todos</a>
-                        <a class="btn btn-warning" href="/storeAdmins/admin-products?category=${requestScope.product.categoryVO.id}&product=${requestScope.product.id}&option=edit">
+                        <a class="btn btn-warning" href="/storeAdmins/admin-products?product=${requestScope.product.id}&option=edit">
                             <i class="fa fa-pencil"></i> Editar
                         </a>
                     </h1>
@@ -48,10 +48,11 @@
             </div>
             <!-- /.row -->
             <div class="row"> 
-                <div class="row">                
-                   <c:if test="${alerMmessage != null}" var="exsits_product_message" scope="request">
-                    <p class="alert alert-info">${requestScope.alerMmessage}</p>
-                   </c:if>
+                <div class="col-xs-12">                
+
+                <c:if test="${message != null}" var="exsits_message" scope="request">
+                    <p class="alert alert-info">${requestScope.message}</p>
+                </c:if>
                 
                 <dl class="dl-horizontal">
                     <dt>Nombre:</dt> <dd>${requestScope.product.name}</dd>

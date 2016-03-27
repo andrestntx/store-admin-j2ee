@@ -79,17 +79,17 @@ public class ProductFacade extends BaseFacade {
         CategoryService categoryService = ServiceFactory.getCategoryService();
         ProductService productService = ServiceFactory.getProductService();
         
-        try {
+        //try {
             trans.begin();
             CategoryVO categoryVO = categoryService.getCategory(categoryId, em);
             productVO = productService.updateProduct(productVO, categoryVO, em);
             trans.commit();
-        } catch (Exception e) {
+        /*} catch (Exception e) {
             trans.rollback();            
             System.err.println(e.getMessage());
         } finally {
             this.closeAndClearEntityManager(em);
-        }  
+        }  */
 
         return productVO;
     }
@@ -114,7 +114,7 @@ public class ProductFacade extends BaseFacade {
         return productVO;
     }
     
-    public ProductVOW getProductForm(Long categoryId, Long productId) {
+    public ProductVOW getExistsProductForm(Long productId) {
         EntityManager em = this.getNewEntityManager();
         EntityTransaction trans = this.getEntityTransaction(em);
         
@@ -127,8 +127,7 @@ public class ProductFacade extends BaseFacade {
             trans.begin();
             ProductVO productVO  = service.getProduct(productId, em);
             List<CategoryVO> categoriesVO = serviceCategory.allCategories(em);
-            CategoryVO categoryVO = serviceCategory.getCategory(categoryId, em);
-            productVOW = new ProductVOW(productVO, categoryVO, categoriesVO);
+            productVOW = new ProductVOW(productVO, categoriesVO);
             trans.commit();
         } catch (Exception e) {
             trans.rollback();            

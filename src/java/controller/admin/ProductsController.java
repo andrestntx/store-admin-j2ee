@@ -103,10 +103,10 @@ public class ProductsController extends HttpServlet {
         return null;
     }
     
-    protected RequestDispatcher doGetProduct(HttpServletRequest request, HttpServletResponse response, ProductFacade facade, Long productId, Long categoryId)
+    protected RequestDispatcher doGetProduct(HttpServletRequest request, HttpServletResponse response, ProductFacade facade, Long productId)
         throws ServletException, IOException {
         
-        ProductVOW productVOW = facade.getProductForm(categoryId, productId);
+        ProductVOW productVOW = facade.getExistsProductForm(productId);
         if(productVOW == null){
             return Handler.doGetPageError(request, response, "La categoría o el producto no existe");
         }
@@ -115,9 +115,11 @@ public class ProductsController extends HttpServlet {
         return null;
     }
     
+    
     protected RequestDispatcher doPostProduct(HttpServletRequest request, HttpServletResponse response, ProductFacade facade, Long categoryId){
         ProductVO productVO = facade.newProduct(this.getNewProductVO(request), categoryId);
         request.setAttribute("product", productVO);
+        request.setAttribute("message", "Producto creado correcatemente");
         return request.getRequestDispatcher("views/admin/products/view_product.jsp");
     }
     
@@ -144,6 +146,7 @@ public class ProductsController extends HttpServlet {
         }
         
         request.setAttribute("product", productVO);
+        request.setAttribute("message", "Producto actualizado correcatemente");
         return request.getRequestDispatcher("views/admin/products/view_product.jsp");
     }
 
@@ -174,24 +177,29 @@ public class ProductsController extends HttpServlet {
             if("create".equals(option)){
                 rd = this.doGetCreateProduct(request, response, facade, new Long(categoryId));
             }
-            else if("edit".equals(option) && Handler.isLong(productId)){
-                rd = doGetProduct(request, response, facade, new Long(productId), new Long(categoryId));
-                if(rd == null) {
-                    rd = request.getRequestDispatcher("views/admin/products/edit_product.jsp");
-                }
-            } 
-            else if(Handler.isLong(productId)){
-                rd = doGetProduct(request, response, facade, new Long(productId), new Long(categoryId));
-                if(rd == null) {
-                    rd = request.getRequestDispatcher("views/admin/products/view_product.jsp");
-                }
-            }
             else {
                 rd = doGetProducts(request, response, facade, new Long(categoryId));
             }
         }
+        else if("edit".equals(option) && Handler.isLong(productId)){
+            rd = doGetProduct(request, response, facade, new Long(productId));
+            if(rd == null) {
+                rd = request.getRequestDispatcher("views/admin/products/edit_product.jsp");
+            }
+        } 
+        else if(Handler.isLong(productId)){
+            ProductVO product = facade.getProduct(new Long(productId));
+            request.setAttribute("product", product);
+            
+            if(product == null) {
+                rd = Handler.doGetPageError(request, response, "El producto no existe");
+            }
+            else {
+                rd = request.getRequestDispatcher("views/admin/products/view_product.jsp");
+            }
+        }
         else {
-            rd = Handler.doGetPageError(request, response, "La categoría o el producto no existe");
+            rd = Handler.doGetPageError(request, response, "La categoría no existe");
         }
         
         rd.forward(request, response);

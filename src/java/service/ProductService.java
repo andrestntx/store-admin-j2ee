@@ -72,10 +72,11 @@ public class ProductService {
 
     public ProductVO updateProduct(ProductVO productVO, CategoryVO categoryVO, EntityManager em){
         ProductDAO productDAO = DAOFactory.getProductDAO(em);  
-        Product product = productDAO.find(productVO.getId());
+        Product exists = productDAO.find(productVO.getId());
 
-        if( product != null) {
-            product.setCategory(categoryVO.toEntity());
+        if( exists != null) {
+            productVO.setCategoryVO(categoryVO);
+            Product product = productVO.toEntity();
             return productDAO.update(product).toVO();
         }
        
