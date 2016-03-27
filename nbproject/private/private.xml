@@ -3,19 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/Users/andrestntx/NetBeansProjects/storeAdmins/web/WEB-INF/web.xml</file>
-            <file>file:/Users/andrestntx/NetBeansProjects/storeAdmins/web/WEB-INF/glassfish-resources.xml</file>
-            <file>file:/Users/andrestntx/NetBeansProjects/storeAdmins/src/conf/persistence.xml</file>
-=======
-            <file>file:/C:/Users/Felipe%20Iz/Documents/NetBeansProjects/PA2/storeAdmins/web/views/includes/header.jsp</file>
-            <file>file:/C:/Users/Felipe%20Iz/Documents/NetBeansProjects/PA2/storeAdmins/web/views/template.jsp</file>
-            <file>file:/C:/Users/Felipe%20Iz/Documents/NetBeansProjects/PA2/storeAdmins/web/views/includes/settings.jsp</file>
-            <file>file:/C:/Users/Felipe%20Iz/Documents/NetBeansProjects/PA2/storeAdmins/web/views/includes/sidebar.jsp</file>
-            <file>file:/C:/Users/Felipe%20Iz/Documents/NetBeansProjects/PA2/storeAdmins/web/views/includes/css.jsp</file>
-            <file>file:/C:/Users/Felipe%20Iz/Documents/NetBeansProjects/PA2/storeAdmins/web/views/includes/meta.jsp</file>
-            <file>file:/C:/Users/Felipe%20Iz/Documents/NetBeansProjects/PA2/storeAdmins/web/views/includes/script.jsp</file>
->>>>>>> 6af9b5bf4dff16f6b35793fa1883c7e54f2e01bd
+            <file>file:/Users/andrestntx/NetBeansProjects/storeAdmins/src/java/controller/admin/ProductsController.java</file>
+            <file>file:/Users/andrestntx/NetBeansProjects/storeAdmins/src/java/dao/BaseDAO.java</file>
         </group>
     </open-files>
 </project-private>

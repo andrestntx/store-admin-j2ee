@@ -85,13 +85,11 @@ public class AuthController extends HttpServlet {
         LoginFacade login = new LoginFacade();
         UserVO user = login.login(username, password);
         
-        if (user != null) {
-            System.out.println("Entro");
+        if (user != null) {            
             HttpSession httpSession = request.getSession();
-            httpSession.setAttribute("usuario", user);
+            httpSession.setAttribute("user", user);
             response.sendRedirect("views/admin/home.jsp");
-        } else {
-            System.out.println("No");
+        } else {            
             RequestDispatcher rd = request.getRequestDispatcher("views/loguin.jsp");
             rd.forward(request, response);
         }        

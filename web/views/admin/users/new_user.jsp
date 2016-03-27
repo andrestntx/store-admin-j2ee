@@ -44,7 +44,7 @@
             <!-- /.row -->
             <div class="row">
                 
-                <form method="POST" action="/storeAdmins/admin/users" class="form-horizontal">
+                <form method="POST" action="/storeAdmins/admin-users" class="form-horizontal">
                 <div class="form-group">
                     <label class="col-sm-2 control-label">Nombre</label>
                     <div class="col-sm-10">

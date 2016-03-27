@@ -44,7 +44,7 @@
             <!-- /.row -->
             <div class="row">
                 
-                <form method="POST" action="/storeAdmins/admin/users" class="form-horizontal">
+                <form method="POST" action="/storeAdmins/admin-users" class="form-horizontal">
                 <div class="form-group">
                     <label class="col-sm-2 control-label">Nombre</label>
                     <div class="col-sm-10">
@@ -70,7 +70,7 @@
                     </div>
                 </div>                
                 <input type="hidden" name="id" value="${requestScope.user.id}">
-                <input type="hidden" name="option" value="3">
+                <input type="hidden" name="option" value="2">
                 <input type="submit" class="btn btn-info col-sm-offset-2" value="Guardar"/>
             </form>
                                           
