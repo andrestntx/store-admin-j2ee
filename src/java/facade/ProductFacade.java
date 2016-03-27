@@ -35,6 +35,7 @@ public class ProductFacade extends BaseFacade {
             trans.begin();
             CategoryVO category = categoryService.getCategory(categoryId, em);
             if(category != null){
+                System.out.println("entro aca");
                 products = productService.getProductsOfCategory(categoryId, em);
                 productVOW = new ProductVOW(category, products);
             }

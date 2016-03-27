@@ -49,7 +49,7 @@ public class ProductService {
 
     public List<ProductVO> getProductsOfCategory(Long categoryId, EntityManager em) {
         ProductDAO productDAO = DAOFactory.getProductDAO(em);
-        return this.toVO(productDAO.getByAttribute("category_id", categoryId.toString()));
+        return this.toVO(productDAO.getByAttribute("CATEGORY_ID", categoryId.toString()));
     }
 
     public ProductVO getProduct(Long productId, EntityManager em) {

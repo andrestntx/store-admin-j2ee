@@ -74,7 +74,8 @@ public class BaseDAO <T> {
     }
     
     public List<T> getByAttribute(String attribute, String value){
-        Query jpql = this.em.createQuery("select s from " + this.type.getSimpleName() + " s where s.:attribute.id = :value");
+        System.out.println("atribute " + attribute +" value " + value);
+        Query jpql = this.em.createQuery("select s from " + this.type.getSimpleName() + " s where s.:attribute = :value");
         jpql.setParameter("attribute", attribute);
         jpql.setParameter("value", value);
         
