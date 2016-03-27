@@ -3,12 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Felipe%20Iz/Documents/NetBeansProjects/PA2/storeAdmins/src/java/service/ProductService.java</file>
-            <file>file:/C:/Users/Felipe%20Iz/Documents/NetBeansProjects/PA2/storeAdmins/src/java/dao/BaseDAO.java</file>
-            <file>file:/C:/Users/Felipe%20Iz/Documents/NetBeansProjects/PA2/storeAdmins/src/java/facade/ProductFacade.java</file>
-            <file>file:/C:/Users/Felipe%20Iz/Documents/NetBeansProjects/PA2/storeAdmins/src/java/service/CategoryService.java</file>
-            <file>file:/C:/Users/Felipe%20Iz/Documents/NetBeansProjects/PA2/storeAdmins/web/views/guest/categories.jsp</file>
-            <file>file:/C:/Users/Felipe%20Iz/Documents/NetBeansProjects/PA2/storeAdmins/src/java/controller/CategoriesController.java</file>
+            <file>file:/Users/andrestntx/NetBeansProjects/storeAdmins/web/views/admin/products/lists_products.jsp</file>
+            <file>file:/Users/andrestntx/NetBeansProjects/storeAdmins/web/views/admin/categories/view_category.jsp</file>
+            <file>file:/Users/andrestntx/NetBeansProjects/storeAdmins/src/java/facade/ProductFacade.java</file>
+            <file>file:/Users/andrestntx/NetBeansProjects/storeAdmins/src/java/vow/ProductVOW.java</file>
+            <file>file:/Users/andrestntx/NetBeansProjects/storeAdmins/src/java/controller/admin/CategoriesController.java</file>
+            <file>file:/Users/andrestntx/NetBeansProjects/storeAdmins/web/views/admin/products/new_product.jsp</file>
+            <file>file:/Users/andrestntx/NetBeansProjects/storeAdmins/web/views/admin/products/view_product.jsp</file>
+            <file>file:/Users/andrestntx/NetBeansProjects/storeAdmins/src/java/controller/admin/ProductsController.java</file>
+            <file>file:/Users/andrestntx/NetBeansProjects/storeAdmins/web/views/admin/users/lists_users.jsp</file>
+            <file>file:/Users/andrestntx/NetBeansProjects/storeAdmins/web/views/admin/products/edit_product.jsp</file>
+            <file>file:/Users/andrestntx/NetBeansProjects/storeAdmins/web/views/admin/categories/lists_categories.jsp</file>
         </group>
     </open-files>
 </project-private>

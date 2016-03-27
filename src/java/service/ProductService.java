@@ -67,7 +67,7 @@ public class ProductService {
 
     public List<ProductVO> searchProducts(String search, EntityManager em) {
         ProductDAO productDAO = DAOFactory.getProductDAO(em);
-        return this.toVO(productDAO.getLikeByAttribute("name", search));
+        return this.toVO(productDAO.search(search));
     }
 
     public ProductVO updateProduct(ProductVO productVO, CategoryVO categoryVO, EntityManager em){

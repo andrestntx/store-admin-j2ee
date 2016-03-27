@@ -16,6 +16,7 @@ import vo.CategoryVO;
 import vo.ProductVO;
 import vow.CategoryVOW;
 import vow.ProductVOW;
+import vow.SearchVOW;
 
 /**
  *
@@ -32,7 +33,7 @@ public class ProductFacade extends BaseFacade {
         List<ProductVO> products = new ArrayList<>();
         CategoryVOW productVOW = null;
         
-        //try {
+        try {
             trans.begin();
             CategoryVO category = categoryService.getCategory(categoryId, em);
             if(category != null){
@@ -40,12 +41,12 @@ public class ProductFacade extends BaseFacade {
                 productVOW = new CategoryVOW(category, products);
             }
             trans.commit();
-        /*} catch (Exception e) {
+        } catch (Exception e) {
             trans.rollback();            
             System.err.println(e.getMessage());
         } finally {
             this.closeAndClearEntityManager(em);
-        }*/
+        }
 
         return productVOW;
     }
@@ -79,17 +80,17 @@ public class ProductFacade extends BaseFacade {
         CategoryService categoryService = ServiceFactory.getCategoryService();
         ProductService productService = ServiceFactory.getProductService();
         
-        //try {
+        try {
             trans.begin();
             CategoryVO categoryVO = categoryService.getCategory(categoryId, em);
             productVO = productService.updateProduct(productVO, categoryVO, em);
             trans.commit();
-        /*} catch (Exception e) {
+        } catch (Exception e) {
             trans.rollback();            
             System.err.println(e.getMessage());
         } finally {
             this.closeAndClearEntityManager(em);
-        }  */
+        } 
 
         return productVO;
     }
@@ -185,7 +186,26 @@ public class ProductFacade extends BaseFacade {
         return flag;
     }
 
-    public List<ProductVO> searchProducts(String search) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public SearchVOW searchProducts(String search) {
+        EntityManager em = this.getNewEntityManager();
+        EntityTransaction trans = this.getEntityTransaction(em);
+        
+        ProductService productService = ServiceFactory.getProductService();
+        List<ProductVO> products = new ArrayList<>();
+        SearchVOW searchVOW = null;
+        
+        try {
+            trans.begin();
+            products = productService.searchProducts(search, em);
+            searchVOW = new SearchVOW(search, products);
+            trans.commit();
+        } catch (Exception e) {
+            trans.rollback();            
+            System.err.println(e.getMessage());
+        } finally {
+            this.closeAndClearEntityManager(em);
+        }
+
+        return searchVOW;
     }
 }

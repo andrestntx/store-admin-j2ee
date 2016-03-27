@@ -89,9 +89,8 @@ public class BaseDAO <T> {
     }
     
     public List<T> getLikeByAttribute(String attribute, String value){
-        Query jpql = this.em.createQuery("select s from " + this.type.getSimpleName() + " s where s." + attribute + " LIKE % :value %");
-        jpql.setParameter("attribute", attribute);
-        jpql.setParameter("value", value);
+        Query jpql = this.em.createQuery("select s from " + this.type.getSimpleName() + " s where s." + attribute + " LIKE :value");
+        jpql.setParameter("value", "%" + value + "%");
         
         return (List<T>)jpql.getResultList();
     }

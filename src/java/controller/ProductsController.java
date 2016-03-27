@@ -9,6 +9,7 @@ import facade.FacadeFactory;
 import facade.ProductFacade;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import vo.ProductVO;
+import vow.SearchVOW;
 
 /**
  *
@@ -35,6 +37,17 @@ public class ProductsController extends HttpServlet {
         
         request.setAttribute("product", product);
                 RequestDispatcher rd = request.getRequestDispatcher("views/guest/product.jsp");
+        
+        return rd;
+    }
+    
+    protected RequestDispatcher doGetSearchProduct(HttpServletRequest request, HttpServletResponse response, ProductFacade facade, String search)
+        throws ServletException, IOException {
+                
+        SearchVOW searchVOW = facade.searchProducts(search);
+        
+        request.setAttribute("searchVOW", searchVOW);
+        RequestDispatcher rd = request.getRequestDispatcher("views/guest/search.jsp");
         
         return rd;
     }
@@ -79,14 +92,19 @@ public class ProductsController extends HttpServlet {
             throws ServletException, IOException {
         
         String productId = request.getParameter("product");
+        String search = request.getParameter("search");
         
-        if(productId == null) {
-            HttpServletResponse res = (HttpServletResponse) response;
-            res.sendRedirect("/storeAdmins/categories");
-        }
-        else {
+        if(Handler.isLong(productId)) {
             RequestDispatcher rd = this.doGetProductById(request, response, FacadeFactory.getProductFacade(), new Long(productId));
             rd.forward(request, response);
+        }
+        else if(search != null) {
+            RequestDispatcher rd = this.doGetSearchProduct(request, response, FacadeFactory.getProductFacade(), search);
+            rd.forward(request, response);
+        }
+        else {
+            HttpServletResponse res = (HttpServletResponse) response;
+            res.sendRedirect("/storeAdmins/categories");
         } 
         
     }
